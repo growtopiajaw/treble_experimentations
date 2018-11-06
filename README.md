@@ -9,24 +9,23 @@ xda-developers threads: https://forum.xda-developers.com/search.php?do=finduser&
 # How to build
 
 * clone this repository
-* call the build scripts from a separate directory
+* call the build script from a separate directory
 
 For example:
 
-    git clone https://github.com/phhusson/treble_experimentations
-    mkdir Lineage; cd Lineage
-    bash ../treble_experimentations/build-rom.sh android-8.1 lineage
+* by default, you'll be using build.sh (aka highly customized build-dakkar.sh) for more complex user inputs (in simple terms, more features)
+* phh's build.sh & build-rom.sh has been removed to provide userfriendly experience
+* you just need to run the script. All setup to start building are already included in this script
+* thanks to me, your workload has been reduced :D
 
-## More flexible build script
-
-(this has been tested much less)
-
-  bash ../treble_experimentations/build-dakkar.sh rr \
+    git clone https://github.com/GrowtopiaJaw/treble_experimentations
+    mkdir lineage151
+    cd lineage151
+    bash ../treble_experimentations/build.sh lineage151 \
     arm-aonly-gapps-su \
     arm64-ab-go-nosu
 
-The script should provide a help message if you pass something it
-doesn't understand
+The script should provide a help message if you pass something it doesn't understand
 
 # Using Docker
 

@@ -9,7 +9,7 @@ selfpath = os.path.dirname(sys.argv[0])
 config = ConfigParser()
 config.read(os.path.join(selfpath, "config.ini"))
 
-g = Github(config['github']['token'])
+g = Github(config['user']['token'])
 
 repo = g.get_user().get_repo("treble_experimentations")
 
