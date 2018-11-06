@@ -24,14 +24,12 @@ if type busybox >/dev/null 2>&1; then
     echo
     echo -e "busybox is installed. Proceeding..."
     echo
-        else
-        if type apt >/dev/null 2>&1; then
-	    echo
+        elif type apt >/dev/null 2>&1; then
+	        echo
             echo -e "busybox is NOT installed. Installing..."
-	    echo
+	        echo
             sudo apt update
             sudo apt install busybox
-        fi
 fi
 
 ## check for i386 architecture with dpkg --print-foreign-architectures
@@ -66,7 +64,7 @@ if [ -f "$treble_d/.p_done.txt" ]; then
     echo -e "All packages are installed. Proceeding..."
     echo
         else
-            dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
+        dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
 	    touch "$treble_d/.p_done.txt"
 fi
 
@@ -634,15 +632,14 @@ function init_release() {
     mkdir -p "release/$rom_rf"
 }
 
-## repo init mainrepo with mainbranch/ treble_merged_tag
+## repo init mainrepo with mainbranch
 function init_main_repo() {
-    if [[ $choice_origin_2 =~ ^[Yy]$ ]];then
-        if [[ $choice =~ ^[Yy]$ ]];then
-            repo init -u "$mainrepo" -b "$mainbranch"
-        elif [[ $choice_origin_2 =~ ^[Aa]$ ]];then
-            repo init -u "$mainrepo" -b "$treble_merged_tag"
-        fi
-    fi
+    repo init -u "$mainrepo" -b "$mainbranch"
+}
+
+## repo init mainrepo with treble_merged_tag
+function init_main_repo_a() {
+    repo init -u "$mainrepo" -b "$treble_merged_tag"
 }
 
 ## git clone or checkout phh's repository
@@ -810,7 +807,7 @@ if [[ $choice_origin_2 =~ ^[Yy]$ ]]; then
             init_patches
             sync_repo
         elif [[ $choice_origin_2 =~ ^[Aa]$ ]]; then
-            init_main_repo
+            init_main_repo_a
             init_local_manifest
             checkout_r_manifest
             init_patches
@@ -837,10 +834,10 @@ if [[ $choice_origin =~ ^[Yy]$ ]]; then
         else
             if [[ $USER == growtopiajaw ]]; then
                 echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
-		echo
+		        echo
             elif [[ $USER != growtopiajaw ]]; then
                 echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
-		echo
+		        echo
             fi
 fi
 
@@ -855,10 +852,10 @@ if [[ $USER == growtopiajaw ]]; then
         pip install -r "$treble_d/release/requirements.txt"
         read -p "ROM name? " r_name
         echo -e "Oke $r_name it is!"
-	echo
+	    echo
         read -p "Version ? " r_version
         echo -e "Naisss"
-	echo
+	    echo
         python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
     fi
 fi
