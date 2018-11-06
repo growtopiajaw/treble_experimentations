@@ -16,6 +16,9 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+## treble_experimentations folder
+treble_d="$(busybox dirname $0)"
+
 ## if busybox is installed then proceed, if not then install
 if type busybox >/dev/null 2>&1; then
     echo -e "busybox is installed. Proceeding..."
@@ -112,9 +115,6 @@ rom_rf="$(date +%y%m%d)"
 
 ## script name
 script_n="$(basename $0)"
-
-## treble_experimentations folder
-treble_d="$(busybox dirname $0)"
 
 ## detect system type
 if [[ $(uname -s) = "Darwin" ]];then
