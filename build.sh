@@ -16,6 +16,16 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
+## if busybox is installed then proceed, if not then install
+if type busybox >/dev/null 2>&1; then
+    echo -e "busybox is installed. Proceeding..."
+        else
+        if type apt >/dev/null 2>&1; then
+            echo -e "busybox is NOT installed. Installing..."
+            sudo apt update
+            sudo apt install busybox
+fi
+
 ## check for i386 architecture with dpkg --print-foreign-architectures
 if type dpkg >/dev/null 2>&1; then
     i386=$(dpkg --print-foreign-architectures | awk '{print $1}')
@@ -102,7 +112,7 @@ rom_rf="$(date +%y%m%d)"
 script_n="$(basename "$0")"
 
 ## treble_experimentations folder
-treble_d="$(dirname "$0")"
+treble_d="$(busybox dirname "$0")"
 
 ## detect system type
 if [[ $(uname -s) = "Darwin" ]];then
