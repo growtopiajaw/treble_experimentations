@@ -21,10 +21,14 @@ treble_d="$(busybox dirname $0)"
 
 ## if busybox is installed then proceed, if not then install
 if type busybox >/dev/null 2>&1; then
+    echo
     echo -e "busybox is installed. Proceeding..."
+    echo
         else
         if type apt >/dev/null 2>&1; then
+	    echo
             echo -e "busybox is NOT installed. Installing..."
+	    echo
             sudo apt update
             sudo apt install busybox
         fi
@@ -200,6 +204,7 @@ Example:
 * arm64-ab-gapps-su
 * arm-aonly-vanilla-nosu-eng
 * arm64-ab-gapps-su-user
+
 EOF
 }
 
@@ -601,6 +606,7 @@ function parse_variant() {
                 fi
 
 echo "treble_${soc_arch}_${partition_lay}${gapps_select}${su_select}-${build_select}"
+echo
 }
 
 ## combine sorted variant
@@ -758,13 +764,17 @@ function compress_system() {
     if [[ $USER != growtopiajaw ]]; then
         cd out/target/product/*/
         echo -e "Compressing system-$2.img..."
+	echo
         xz -cv system*.img
         echo -e "Done!"
+	echo
     elif [[ $USER == growtopiajaw ]]; then
         cd "$treble_d/release/$rom_rf"
         echo -e "Compressing system-$2.img..."
+	echo
         xz -cv system*.img
         echo -e "Done!"
+	echo
     fi
 }
 
@@ -793,6 +803,7 @@ init_release
 if [[ $choice_origin_2 =~ ^[Yy]$ ]]; then
     ## handle command line arguments
     read -p "Do you want to sync? (y/N): " choice
+    echo
         if [[ $choice =~ ^[Yy]$ ]]; then
             init_main_repo
             init_local_manifest
@@ -818,6 +829,7 @@ for (( idx=0; idx < ${#variant_code[*]}; idx++ )); do
 
 ## ask user if they want to compress system images
 read -p "Do you want to compress system-$2.img? (y/N): " choice_origin
+echo
 
 ## if yes then proceed with the image compressing. if no then done
 if [[ $choice_origin =~ ^[Yy]$ ]]; then
@@ -825,8 +837,10 @@ if [[ $choice_origin =~ ^[Yy]$ ]]; then
         else
             if [[ $USER == growtopiajaw ]]; then
                 echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
+		echo
             elif [[ $USER != growtopiajaw ]]; then
                 echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
+		echo
             fi
 fi
 
@@ -836,12 +850,15 @@ fi
 ## gud luck n baii!!
 if [[ $USER == growtopiajaw ]]; then
     read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
+    echo
     if [[ $choice_r =~ ^[Yy]$ ]]; then
         pip install -r "$treble_d/release/requirements.txt"
         read -p "ROM name? " r_name
         echo -e "Oke $r_name it is!"
+	echo
         read -p "Version ? " r_version
         echo -e "Naisss"
+	echo
         python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
     fi
 fi
