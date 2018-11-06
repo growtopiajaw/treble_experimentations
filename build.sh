@@ -55,11 +55,12 @@ function install_packages() {
 packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
 
 ## find missing packages from the list above and install them
-if [ -f "$treble_d"/.p_done.txt ]; then
+if [ -f "$treble_d/.p_done.txt" ]; then
     echo -e "All packages are installed. Proceeding..."
+    echo
         else
             dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
-	    touch "$treble_d"/.p_done.txt
+	    touch "$treble_d/.p_done.txt"
 fi
 
 ## if git is installed then proceed, if not then install and setup
@@ -110,10 +111,10 @@ export ANDROID_COMPILE_WITH_JACK=false
 rom_rf="$(date +%y%m%d)"
 
 ## script name
-script_n="$(basename "$0")"
+script_n="$(basename $0)"
 
 ## treble_experimentations folder
-treble_d="$(busybox dirname "$0")"
+treble_d="$(busybox dirname $0)"
 
 ## detect system type
 if [[ $(uname -s) = "Darwin" ]];then
@@ -624,7 +625,7 @@ function get_variant() {
 
 ## create release folder directory
 function init_release() {
-    mkdir -p release/"$rom_rf"
+    mkdir -p "release/$rom_rf"
 }
 
 ## repo init mainrepo with mainbranch/ treble_merged_tag
@@ -648,7 +649,7 @@ function clone_or_checkout() {
                 cd "$dir"
                 git fetch
                 git reset --hard
-                git checkout origin/"$localManifestBranch"
+                git checkout "origin/$localManifestBranch"
             )
         else
             git clone https://github.com/phhusson/"$repo" "$dir" -b "$localManifestBranch"
@@ -665,7 +666,7 @@ function clone_or_checkout_origin() {
                 cd "$dir"
                 git fetch
                 git reset --hard
-                git checkout origin/"$localManifestBranch"
+                git checkout "origin/$localManifestBranch"
             )
         else
             ## huge selection of .mk in my repository
@@ -717,16 +718,16 @@ function patch_things() {
     fi
             bash generate.sh "$treble_generate"
         )
-        bash "$treble_d"/apply-patches.sh patches
+        bash "$treble_d/apply-patches.sh" patches
     else
         (
             cd device/phh/treble
             git clean -fdx
             bash generate.sh
         )
-        repo manifest -r > release/"$rom_rf"/manifest.xml
-        bash "$treble_d"/list-patches.sh
-        cp patches.zip release/"$rom_rf"/patches.zip
+        repo manifest -r > "release/$rom_rf/manifest.xml"
+        bash "$treble_d/list-patches.sh"
+        cp patches.zip "release/$rom_rf/patches.zip"
     fi
 }
 
@@ -738,9 +739,9 @@ function build_variant() {
     make $extra_make_options BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
         if [[ $USER != growtopiajaw ]]; then
             cd out/target/product/*/
-            mv system.img system-"$2".img
+            mv system.img "system-$2.img"
         elif [[ $USER = growtopiajaw ]]; then
-            mv out/target/product/*/system.img "'$treble_d'/release/" "'$rom_rf'/system-'$2'.img"
+            mv out/target/product/*/system.img "$treble_d/release/" "$rom_rf/system-$2.img"
         fi
 }
 
@@ -756,12 +757,12 @@ function jack_env() {
 function compress_system() {
     if [[ $USER != growtopiajaw ]]; then
         cd out/target/product/*/
-        echo -e "Compressing system-'$2'.img..."
+        echo -e "Compressing system-$2.img..."
         xz -cv system*.img
         echo -e "Done!"
     elif [[ $USER == growtopiajaw ]]; then
         cd "$treble_d/release/$rom_rf"
-        echo -e "Compressing system-'$2'.img..."
+        echo -e "Compressing system-$2.img..."
         xz -cv system*.img
         echo -e "Done!"
     fi
@@ -816,16 +817,16 @@ for (( idx=0; idx < ${#variant_code[*]}; idx++ )); do
     build_variant "${variant_code[$idx]}" "${variant_name[$idx]}"
 
 ## ask user if they want to compress system images
-read -p "Do you want to compress system-'$2'.img? (y/N): " choice_origin
+read -p "Do you want to compress system-$2.img? (y/N): " choice_origin
 
 ## if yes then proceed with the image compressing. if no then done
 if [[ $choice_origin =~ ^[Yy]$ ]]; then
     compress_system
         else
             if [[ $USER == growtopiajaw ]]; then
-                echo -e "Your system-'$2'.img is at '$treble_d/release/$rom_rf/system-'$2'.img'"
+                echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
             elif [[ $USER != growtopiajaw ]]; then
-                echo -e "Your system-'$2'.img is at '/out/target/product/*/system-'$2'.img'"
+                echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
             fi
 fi
 
@@ -836,12 +837,12 @@ fi
 if [[ $USER == growtopiajaw ]]; then
     read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
     if [[ $choice_r =~ ^[Yy]$ ]]; then
-        pip install -r "$treble_d"/release/requirements.txt
+        pip install -r "$treble_d/release/requirements.txt"
         read -p "ROM name? " r_name
         echo -e "Oke $r_name it is!"
         read -p "Version ? " r_version
         echo -e "Naisss"
-        python3 "'$treble_d'/release/push.py" "$r_name"  "v$r_version" "release/'$rom_rf/'"
+        python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
     fi
 fi
 done
