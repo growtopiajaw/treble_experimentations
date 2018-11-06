@@ -41,7 +41,7 @@ function install_packages() {
 }
 
 ## required packages to be installed for compiling rom
-packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "flex:i386" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
+packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
 
 ## find missing packages from the list above and install them
 if [ -f $treble_d/.p_done.txt ]; then
