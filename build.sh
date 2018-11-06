@@ -24,6 +24,7 @@ if type busybox >/dev/null 2>&1; then
             echo -e "busybox is NOT installed. Installing..."
             sudo apt update
             sudo apt install busybox
+        fi
 fi
 
 ## check for i386 architecture with dpkg --print-foreign-architectures
@@ -54,11 +55,11 @@ function install_packages() {
 packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
 
 ## find missing packages from the list above and install them
-if [ -f $treble_d/.p_done.txt ]; then
+if [ -f "$treble_d"/.p_done.txt ]; then
     echo -e "All packages are installed. Proceeding..."
         else
             dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
-	    touch $treble_d/.p_done.txt
+	    touch "$treble_d"/.p_done.txt
 fi
 
 ## if git is installed then proceed, if not then install and setup
@@ -739,7 +740,7 @@ function build_variant() {
             cd out/target/product/*/
             mv system.img system-"$2".img
         elif [[ $USER = growtopiajaw ]]; then
-            mv out/target/product/*/system.img "$treble_d"/release/" $rom_rf"/system-"$2".img
+            mv out/target/product/*/system.img "'$treble_d'/release/" "'$rom_rf'/system-'$2'.img"
         fi
 }
 
@@ -803,6 +804,7 @@ if [[ $choice_origin_2 =~ ^[Yy]$ ]]; then
             init_patches
             sync_repo
         fi
+fi
 patch_things
 jack_env
 
@@ -833,15 +835,13 @@ fi
 ## gud luck n baii!!
 if [[ $USER == growtopiajaw ]]; then
     read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
-    fi
     if [[ $choice_r =~ ^[Yy]$ ]]; then
         pip install -r "$treble_d"/release/requirements.txt
         read -p "ROM name? " r_name
         echo -e "Oke $r_name it is!"
         read -p "Version ? " r_version
         echo -e "Naisss"
-        python3 "$treble_d"/release/push.py "$r_name" "v$r_version" release/$rom_fp/
+        python3 "'$treble_d'/release/push.py" "$r_name"  "v$r_version" "release/'$rom_rf/'"
     fi
 fi
-
 done
