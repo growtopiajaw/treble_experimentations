@@ -40,7 +40,7 @@ fi
 ## check for i386 architecture with dpkg --print-foreign-architectures
 if type dpkg >/dev/null 2>&1; then
     i386=$(dpkg --print-foreign-architectures | awk '{print $1}')
-        if [[ $i386 == "i386" ]]; then
+        if [[ "$i386" == "i386" ]]; then
             echo -e "i386 architecture found! Proceeding..."
             echo
         else
@@ -717,7 +717,7 @@ function patch_things() {
         rm -f device/*/sepolicy/common/private/genfs_contexts
         (
             cd device/phh/treble
-    if [[ $choice =~ ^[Yy]$ ]]; then
+    if [[ "$choice" =~ ^[Yy]$ ]]; then
             git clean -fdx
     fi
             bash generate.sh "$treble_generate"
@@ -738,10 +738,10 @@ function patch_things() {
 ## function to compile rom
 function build_variant() {
     lunch "$1"
-    make $extra_make_options BUILD_NUMBER="$rom_rf" installclean
-    make $extra_make_options BUILD_NUMBER="$rom_rf" -j "$jobs" systemimage
-    make $extra_make_options BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
-        if [[ $USER != growtopiajaw ]]; then
+    make "$extra_make_options" BUILD_NUMBER="$rom_rf" installclean
+    make "$extra_make_options" BUILD_NUMBER="$rom_rf" -j "$jobs" systemimage
+    make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
+        if [[ "$USER" != growtopiajaw ]]; then
             cd out/target/product/*/
             mv system.img "system-$2.img"
         else
@@ -759,7 +759,7 @@ function jack_env() {
 
 ## function to compress system image
 function compress_system() {
-    if [[ $USER != growtopiajaw ]]; then
+    if [[ "$USER" != growtopiajaw ]]; then
         cd out/target/product/*/
         echo -e "Compressing system-$2.img..."
         echo
@@ -789,7 +789,7 @@ fi
 
 ## use a python2 virtualenv if system python is python3
 python=$(python -V | awk '{print $2}' | head -c2)
-if [[ $python == "3." ]]; then
+if [[ "$python" == "3." ]]; then
     if [ ! -d .venv ]; then
         virtualenv2 .venv
     fi
@@ -798,18 +798,18 @@ fi
 
 ## initialize build environment
 init_release
-if [[ $choice_origin_2 =~ ^[Yy]$ ]]; then
+if [[ "$choice_origin_2" =~ ^[Yy]$ ]]; then
     ## handle command line arguments
     read -p "Do you want to sync? (y/N): " choice
     echo
-        if [[ $choice =~ ^[Yy]$ ]]; then
+        if [[ "$choice" =~ ^[Yy]$ ]]; then
             init_main_repo
             init_local_manifest
             init_patches
             sync_repo
         fi
 fi
-if [[ $choice_origin_2 =~ ^[Aa]$ ]]; then
+if [[ "$choice_origin_2" =~ ^[Aa]$ ]]; then
     init_main_repo_a
     init_local_manifest
     checkout_r_manifest
@@ -832,9 +832,9 @@ read -p "Do you want to compress system-$2.img? (y/N): " choice_origin
 echo
 
 ## if yes then proceed with the image compressing. if no then done
-if [[ $choice_origin =~ ^[Yy]$ ]]; then
+if [[ "$choice_origin" =~ ^[Yy]$ ]]; then
     compress_system
-        elif [[ $USER != growtopiajaw ]]; then
+        elif [[ a'$USER" != growtopiajaw ]]; then
             echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
             echo
         else
@@ -846,10 +846,10 @@ fi
 ## configure urself if u want ahahah
 ## creating the config.ini part is the hardest
 ## gud luck n baii!!
-if [[ $USER == growtopiajaw ]]; then
+if [[ "$USER" == growtopiajaw ]]; then
     read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
     echo
-        if [[ $choice_r =~ ^[Yy]$ ]]; then
+        if [[ "$choice_r" =~ ^[Yy]$ ]]; then
             pip install -r "$treble_d/release/requirements.txt"
             read -p "ROM name? " r_name
             echo -e "Oke $r_name it is!"
