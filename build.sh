@@ -717,7 +717,7 @@ function patch_things() {
         rm -f device/*/sepolicy/common/private/genfs_contexts
         (
             cd device/phh/treble
-    if [[ $(choice) =~ ^[Yy]$ ]]; then
+    if [[ $choice =~ ^[Yy]$ ]]; then
             git clean -fdx
     fi
             bash generate.sh "$treble_generate"
