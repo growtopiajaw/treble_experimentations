@@ -376,8 +376,8 @@ function get_rom_type() {
                 mainrepo="https://github.com/DirtyUnicorns/android_manifest.git"
                 mainbranch="o8x"
                 localManifestBranch="android-8.1"
-                ## aokp based rom
-                treble_generate="aokp"
+                ## aokp based rom, but not forever
+                treble_generate="du"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ## treble's merged tag is higher than du's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
                 rom_merged_tag=""
