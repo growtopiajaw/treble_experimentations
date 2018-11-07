@@ -2,8 +2,13 @@
 
 set -e
 
-## merged tags last updated 6 Nov 2018
+## merged tags last updated 7 Nov 2018
 ## treble's latest merged tag is 8.1.0_r48
+
+echo -e "Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update."
+echo
+read -p "Press enter to continue"
+clear
 
 ## export username
 if [ -z "$USER" ];then
@@ -24,12 +29,12 @@ if type busybox >/dev/null 2>&1; then
     echo
     echo -e "busybox is installed. Proceeding..."
     echo
-        elif type apt >/dev/null 2>&1; then
-	        echo
-            echo -e "busybox is NOT installed. Installing..."
-	        echo
-            sudo apt update
-            sudo apt install busybox
+elif type apt >/dev/null 2>&1; then
+    echo
+    echo -e "busybox is NOT installed. Installing..."
+    echo
+    sudo apt update
+    sudo apt install busybox
 fi
 
 ## check for i386 architecture with dpkg --print-foreign-architectures
@@ -48,12 +53,10 @@ fi
 
 ## function to install missing packages on apt/ dpkg based system
 function install_packages() {
-    if type apt >/dev/null 2>&1; then
-        echo -e "Checking required packages for compiling ROM..."
-        echo
-        sudo apt update
-        sudo apt install --force-yes "${packages[@]}"
-    fi
+    echo -e "Checking required packages for compiling ROM..."
+    echo
+    sudo apt update
+    sudo apt install --force-yes "${packages[@]}"
 }
 
 ## required packages to be installed for compiling rom
@@ -63,42 +66,42 @@ packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "
 if [ -f "$treble_d/.p_done.txt" ]; then
     echo -e "All packages are installed. Proceeding..."
     echo
-        else
-        dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
-	    touch "$treble_d/.p_done.txt"
+elif type apt >/dev/null 2>&1; then
+    dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
+    touch "$treble_d/.p_done.txt"
 fi
 
 ## if git is installed then proceed, if not then install and setup
 if type git >/dev/null 2>&1; then
     echo -e "git is installed. Proceeding..."
     echo
-        else
-            echo -e "git is NOT installed. Installing..."
-            echo
-            sudo apt install git-core
-            echo -e "Please enter your name for git setup"
-            echo -e "This is required to proceed"
-            read -p ": " u_name
-            echo
-            git config --global user.name "$u_name"
-            echo -e "Please enter your email address for git setup"
-            echo -e "This is also required to proceed"
-            read -p ": " u_email
-            echo
-            git config --global user.email "$u_email"
+elif type apt >/dev/null 2>&1; then
+    echo -e "git is NOT installed. Installing..."
+    echo
+    sudo apt install git-core
+    echo -e "Please enter your name for git setup"
+    echo -e "This is required to proceed"
+    read -p ": " u_name
+    echo
+    git config --global user.name "$u_name"
+    echo -e "Please enter your email address for git setup"
+    echo -e "This is also required to proceed"
+    read -p ": " u_email
+    echo
+    git config --global user.email "$u_email"
 fi
 
 ## if repo is installed then proceed, if not install
 if type repo >/dev/null 2>&1; then
     echo -e "repo is installed. Proceeding..."
     echo
-        else
-            echo -e "repo is NOT installed. Installing..."
-            echo
-            cd
-            mkdir -p ~/bin
-            wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/bin
-            chmod +x ~/bin/repo
+elif type apt >/dev/null 2>&1; then
+    echo -e "repo is NOT installed. Installing..."
+    echo
+    cd
+    mkdir -p ~/bin
+    wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/bin
+    chmod +x ~/bin/repo
 fi
 
 ## some rom compiling errors are fixed when this variable is exported
@@ -172,8 +175,8 @@ ROM Types:
   slim81
   tipsy81
   xenonhd81
-  
-  * Currently 29 types of ROM are available :D
+
+* Currently 29 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -228,7 +231,7 @@ EOF
 ## example: treble_merged_tag="a2af11634f6f67ba16ecd5ab3bc9e1779054e701"
 ## find commit number in github.com/<rom>/platform_manifest/commit
 ##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## don't complain about my grammar. i use loosy (not lousy) english to make more prople understand what i'm talking about
+## don't complain about my grammar. i use loosy (not lousy) english to make more people understand what i'm talking about
 ## if you still don't know what i'm talking about, then please don't touch this get_rom_type function
 
 ## detect rom type inputted by user
@@ -297,7 +300,7 @@ function get_rom_type() {
                 ;;
             aosp90)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
-                mainbranch="android-9.0.0_r1"
+                mainbranch="android-9.0.0_r16"
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options=""
@@ -406,9 +409,7 @@ function get_rom_type() {
                 treble_merged_tag="d364698925b15cf34ab841c0efe6bf6f0f3c9d73"
                 ;;
             havoc81)
-                ## slow manifest update for oreo
-                ## point to my repository for 8.1.0_r48 update from 8.1.0_r43
-                mainrepo="https://github.com/GrowtopiaJaw/android_manifest.git"
+                mainrepo="https://github.com/Havoc-OS/android_manifest.git"
                 mainbranch="oreo"
                 localManifestBranch="android-8.1"
                 treble_generate="havoc"
@@ -743,7 +744,7 @@ function build_variant() {
         if [[ $USER != growtopiajaw ]]; then
             cd out/target/product/*/
             mv system.img "system-$2.img"
-        elif [[ $USER = growtopiajaw ]]; then
+        else
             mv out/target/product/*/system.img "$treble_d/release/" "$rom_rf/system-$2.img"
         fi
 }
@@ -761,17 +762,17 @@ function compress_system() {
     if [[ $USER != growtopiajaw ]]; then
         cd out/target/product/*/
         echo -e "Compressing system-$2.img..."
-	echo
+	    echo
         xz -cv system*.img
         echo -e "Done!"
-	echo
-    elif [[ $USER == growtopiajaw ]]; then
+	    echo
+    else
         cd "$treble_d/release/$rom_rf"
         echo -e "Compressing system-$2.img..."
-	echo
+	    echo
         xz -cv system*.img
         echo -e "Done!"
-	echo
+	    echo
     fi
 }
 
@@ -806,13 +807,14 @@ if [[ $choice_origin_2 =~ ^[Yy]$ ]]; then
             init_local_manifest
             init_patches
             sync_repo
-        elif [[ $choice_origin_2 =~ ^[Aa]$ ]]; then
-            init_main_repo_a
-            init_local_manifest
-            checkout_r_manifest
-            init_patches
-            sync_repo
         fi
+fi
+if [[ $choice_origin_2 =~ ^[Aa]$ ]]; then
+    init_main_repo_a
+    init_local_manifest
+    checkout_r_manifest
+    init_patches
+    sync_repo
 fi
 patch_things
 jack_env
@@ -823,6 +825,7 @@ jack_env
 ## gathering variant information
 for (( idx=0; idx < ${#variant_code[*]}; idx++ )); do
     build_variant "${variant_code[$idx]}" "${variant_name[$idx]}"
+done
 
 ## ask user if they want to compress system images
 read -p "Do you want to compress system-$2.img? (y/N): " choice_origin
@@ -831,14 +834,12 @@ echo
 ## if yes then proceed with the image compressing. if no then done
 if [[ $choice_origin =~ ^[Yy]$ ]]; then
     compress_system
+        elif [[ $USER != growtopiajaw ]]; then
+            echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
+		    echo
         else
-            if [[ $USER == growtopiajaw ]]; then
-                echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
-		        echo
-            elif [[ $USER != growtopiajaw ]]; then
-                echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
-		        echo
-            fi
+            echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
+		    echo
 fi
 
 ## release to github for ME only!!
@@ -848,15 +849,14 @@ fi
 if [[ $USER == growtopiajaw ]]; then
     read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
     echo
-    if [[ $choice_r =~ ^[Yy]$ ]]; then
-        pip install -r "$treble_d/release/requirements.txt"
-        read -p "ROM name? " r_name
-        echo -e "Oke $r_name it is!"
-	    echo
-        read -p "Version ? " r_version
-        echo -e "Naisss"
-	    echo
-        python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
-    fi
+        if [[ $choice_r =~ ^[Yy]$ ]]; then
+            pip install -r "$treble_d/release/requirements.txt"
+            read -p "ROM name? " r_name
+            echo -e "Oke $r_name it is!"
+	        echo
+            read -p "Version ? " r_version
+            echo -e "Naisss"
+	        echo
+            python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
+        fi
 fi
-done
