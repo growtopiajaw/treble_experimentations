@@ -762,17 +762,17 @@ function compress_system() {
     if [[ $USER != growtopiajaw ]]; then
         cd out/target/product/*/
         echo -e "Compressing system-$2.img..."
-	    echo
+        echo
         xz -cv system*.img
         echo -e "Done!"
-	    echo
+        echo
     else
         cd "$treble_d/release/$rom_rf"
         echo -e "Compressing system-$2.img..."
-	    echo
+        echo
         xz -cv system*.img
         echo -e "Done!"
-	    echo
+        echo
     fi
 }
 
@@ -836,10 +836,10 @@ if [[ $choice_origin =~ ^[Yy]$ ]]; then
     compress_system
         elif [[ $USER != growtopiajaw ]]; then
             echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
-		    echo
+            echo
         else
             echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
-		    echo
+            echo
 fi
 
 ## release to github for ME only!!
@@ -853,10 +853,10 @@ if [[ $USER == growtopiajaw ]]; then
             pip install -r "$treble_d/release/requirements.txt"
             read -p "ROM name? " r_name
             echo -e "Oke $r_name it is!"
-	        echo
+            echo
             read -p "Version ? " r_version
             echo -e "Naisss"
-	        echo
+            echo
             python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
         fi
 fi
