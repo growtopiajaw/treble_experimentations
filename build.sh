@@ -599,7 +599,7 @@ function parse_variant() {
             local build_select=${piece[4]}
 
                 if [[ -z "$soc_arch" || -z "$partition_lay" || -z "$gapps_select" || -z "$su_select" ]]; then
-                    >&2 echo "Invalid variant '$1'"
+                    >&2 echo "Invalid variant $1"
                     >&2 help
                     exit 2
                 fi
@@ -834,7 +834,7 @@ echo
 ## if yes then proceed with the image compressing. if no then done
 if [[ "$choice_origin" =~ ^[Yy]$ ]]; then
     compress_system
-        elif [[ a'$USER" != growtopiajaw ]]; then
+        elif [[ "$USER" != growtopiajaw ]]; then
             echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
             echo
         else
