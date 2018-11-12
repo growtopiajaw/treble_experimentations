@@ -48,7 +48,7 @@ elif type apt >/dev/null 2>&1; then
     echo -e "busybox is NOT installed. Installing..."
     echo
     sudo apt update
-    sudo apt install busybox
+    sudo apt -y install busybox
 fi
 
 ## treble_experimentations folder
@@ -73,7 +73,7 @@ function install_packages() {
     echo -e "Checking required packages for compiling ROM..."
     echo
     sudo apt update
-    sudo apt install --allow "${packages[@]}"
+    sudo apt -y install "${packages[@]}"
 }
 
 ## required packages to be installed for compiling rom
@@ -95,7 +95,7 @@ if type git >/dev/null 2>&1; then
 elif type apt >/dev/null 2>&1; then
     echo -e "git is NOT installed. Installing..."
     echo
-    sudo apt install git
+    sudo apt -y install git
     echo -e "Please enter your name for git setup"
     echo -e "This is required to proceed"
     read -p ": " u_name
