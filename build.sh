@@ -2,13 +2,14 @@
 
 set -e
 
-## merged tags last updated 12 Nov 2018
-## treble's latest merged tag is 8.1.0_r48
-
+## news
 echo -e "Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update."
 echo
 read -p "Press enter to continue"
 clear
+
+## handle command line arguments
+read -p "Do you want to sync? (y/N): " choice
 
 ## export username
 if [ -z "$USER" ];then
@@ -17,8 +18,8 @@ if [ -z "$USER" ];then
 fi
 
 ## export ~/.bin to PATH
-if [ -d "~/.bin" ] ; then
-    PATH="~/.bin:$PATH"
+if [ -d ~/.bin ] ; then
+    export PATH=~/.bin:$PATH
 fi
 
 ## some rom compiling errors are fixed when this variable is exported
@@ -115,16 +116,11 @@ elif type apt >/dev/null 2>&1; then
     echo -e "repo is NOT installed. Installing..."
     echo
     cd
-    mkdir -p "~/.bin"
-    PATH="~/.bin:$PATH"
+    mkdir -p ~/.bin
+    export PATH=~/.bin:$PATH
     wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/.bin
-    chmod a+x "~/.bin/repo"
+    chmod a+x ~/.bin/repo
 fi
-
-## if Y then continue normally
-## if N then use compatible merged tag function
-read -p "Enter  Y  to continue. Enter  A  if your build failed. This will use an alternative way (Y/A): " choice_origin_2
-echo
 
 ## help
 function help() {
@@ -196,31 +192,6 @@ Example:
 EOF
 }
 
-## add merged tag
-## sometime, rom manifest updates are slow asf
-## i spent 3 days compiling without turning off my gcp instance and left it on overnight, nuking and builing 3 times only to know that devs didn't merge new tag
-## rip my $$
-## credit goes to @animalIhavebcome in #phhtreble telegram group for figuring out my problem
-## i owe ya huge m8
-
-##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## rom_merged_tag = rom's latest compatible merged tag with treble (treble's merged tag is higher than rom's merged tag) (treble tag = big number, rom tag = small number)
-## example: treble's latest merged tag is 8.1.0_r46 and rom's latest merged tag is only 8.1.0_r43
-## so to make it compatible and not fail in build (like mine did), revert treble's commit to 8.1.0_r43 to match rom's merged tag, which is 8.1.0_r43 (make treble tag number same with rom) (treble tag = rom tag)
-## copy treble's commit number to rom_merged_tag (rom tag small, copy treble commit number)
-## example: rom_merged_tag="9a769ae570ca71ba92e1591d89972555ff327722"
-## find commit number in github.com/GrowtopiaJaw/treble_manifest/commit
-##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## treble_merged_tag = treble's latest compatible merged tag with rom (rom's merged tag is higher than treble's merged tag) (rom tag = big number, treble tag = small number)
-## example: rom's latest merged tag is already at 8.1.0_r48 but treble's latest merged tag is only at 8.1.0_r46
-## to make it compatible, revert rom's commit to 8.1.0_r46 to match treble's merged tag, which is 8.1.0_r46 (make rom tag number same with treble) (rom tag = treble tag)
-## copy rom's commit number to treble_merged_tag (treble tag small, copy rom commit number)
-## example: treble_merged_tag="a2af11634f6f67ba16ecd5ab3bc9e1779054e701"
-## find commit number in github.com/<rom>/platform_manifest/commit
-##---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## don't complain about my grammar. i use loosy (not lousy) english to make more people understand what i'm talking about
-## if you still don't know what i'm talking about, then please don't touch this get_rom_type function
-
 ## detect rom type inputted by user
 function get_rom_type() {
     while [[ $# -gt 0 ]]; do
@@ -231,10 +202,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aex"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than aex's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
-                ## aex's merged tag is higher than treble's merged tag, copy aex's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="f0eadfa8bbb8137a1041d306e35dce4aa4e90907"
                 ;;
             aicp81)
                 mainrepo="https://github.com/AICP/platform_manifest.git"
@@ -242,10 +209,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aicp"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than aicp's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## aicp's merged tag is higher than treble's merged tag, copy aicp's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="f32c6db3a15fd5e528cc9beb23a938c7705e6b30"
                 ;;
             aokp81)
                 mainrepo="https://github.com/AOKP/platform_manifest.git"
@@ -253,10 +216,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aokp"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than aokp's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## aokp's merged tag is higher than treble's merged tag, copy aokp's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="c2a0c93ff3b2044f2d9c6ad67a80743af8cc6cfb"
                 ;;
             aosip81)
                 mainrepo="https://github.com/AOSiP/platform_manifest.git"
@@ -264,13 +223,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aosip"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than aosip's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## aosip's merged tag is higher than treble's merged tag, copy aosip's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="f525e444e52f30ac2dd70480d24b47ce8ddc6d14"
                 ;;
-            ## aosp doesn't need merged tags
-            ## mainbranch is already the merged tags
             aosp80)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
                 mainbranch="android-vts-8.0_r4"
@@ -298,10 +251,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aquari"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than aquari's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## aquari's merged tag is higher than treble's merged tag, copy aquari's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="ca8ac1c93d4ead56710ae01cb1cdc3f2cb78aeee"
                 ;;
             bootleggers81)
                 mainrepo="https://github.com/BootleggersROM/manifest.git"
@@ -309,10 +258,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="bootleggers"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than bootleggers' merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## bootleggers' merged tag is higher than treble's merged tag, copy bootleggers' 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="9df38df7917a360dce46cf5de1d54c4af463a3cd"
                 ;;
             carbon81)
                 mainrepo="https://github.com/CarbonROM/android.git"
@@ -320,10 +265,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="carbon"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than carbon's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## carbon's merged tag is higher than treble's merged tag, copy carbon's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="55e6c304f18daa8f567b01b85fa95aa27120184a"
                 ;;
             cosmic81)
                 mainrepo="https://github.com/Cosmic-OS/platform_manifest.git"
@@ -331,10 +272,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="cosmic"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than cosmic's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## cosmic's merged tag is higher than treble's merged tag, copy cosmic's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="b72bced4114f0a6e729f788ab4761a6eac787073"
                 ;;
             crdroid81)
                 mainrepo="https://github.com/crdroidandroid/android.git"
@@ -343,10 +280,6 @@ function get_rom_type() {
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than crdroid's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## crdroid's merged tag is higher than treble's merged tag, copy crdroid's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="aeda41d94c240962506d19fde2301fb4f2642f84"
                 ;;
             dot81)
                 mainrepo="https://github.com/DotOS/manifest.git"
@@ -354,10 +287,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="dot"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than dot's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
-                ## dot's merged tag is higher than treble's merged tag, copy dot's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
                 ;;
             du81)
                 mainrepo="https://github.com/DirtyUnicorns/android_manifest.git"
@@ -366,10 +295,6 @@ function get_rom_type() {
                 ## aokp based rom, but not forever
                 treble_generate="du"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than du's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
-                ## du's merged tag is higher than treble's merged tag, copy du's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="8062c7e22a901810de9bdca6555dd202034b82c2"
                 ;;
             e-0.2)
                 mainrepo="https://gitlab.e.foundation/e/os/android/"
@@ -379,10 +304,6 @@ function get_rom_type() {
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than eelo's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## eelo's merged tag is higher than treble's merged tag, copy eelo's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="07b96b70dc7d79a7ec207e8a8ee66fabe466e138"
                 ;;
             firehound81)
                 mainrepo="https://github.com/FireHound/platform_manifest.git"
@@ -390,10 +311,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="firehound"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than firehound's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="90ab2ea713fa9b1219cc005a42f41a05f0adf30f"
-                ## firehound's merged tag is higher than treble's merged tag, copy firehound's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="d364698925b15cf34ab841c0efe6bf6f0f3c9d73"
                 ;;
             havoc81)
                 mainrepo="https://github.com/Havoc-OS/android_manifest.git"
@@ -401,10 +318,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than havoc's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="90ab2ea713fa9b1219cc005a42f41a05f0adf30f"
-                ## havoc's merged tag is higher than treble's merged tag (which is almost impossible. almost 5 releases are missed -_- r43 --> r48), copy havoc's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="c742faf37dd209195da84bdf2d21956fd3570059"
                 ;;
             havoc90)
                 mainrepo="https://github.com/Havoc-OS/android_manifest.git"
@@ -412,10 +325,6 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than havoc's merged tag, copy treble's 9.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
-                ## havoc's merged tag is higher than treble's merged tag, copy havoc's 9.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
                 ;;
             lineage151)
                 mainrepo="https://github.com/LineageOS/android.git"
@@ -423,10 +332,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than lineage's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## lineage's merged tag is higher than treble's merged tag, copy lineage's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="342a89084522ea48a27d79744bdab76b32332499"
                 ;;
             lineage160)
                 mainrepo="https://github.com/LineageOS/android.git"
@@ -434,10 +339,6 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than lineage's merged tag, copy treble's 9.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
-                ## lineage's merged tag is higher than treble's merged tag, copy lineage's 9.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
                 ;;
             mokee81)
                 mainrepo="https://github.com/MoKee/android.git"
@@ -445,10 +346,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="mokee"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than mokee's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## mokee's merged tag is higher than treble's merged tag, copy mokee's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="25504863d363038a237572845c819c6718980ab1"
                 ;;
             omni81)
                 mainrepo="https://github.com/omnirom/android.git"
@@ -456,10 +353,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than omni's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
-                ## omni's merged tag is higher than treble's merged tag, copy omni's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="b560988b2b56749a06d5afdab39baf0616fa2576"
                 ;;
             rr81)
                 mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
@@ -467,20 +360,13 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="rr"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than rr's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## rr's merged tag is higher than treble's merged tag, copy rr's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="6d2f4fae415f93d3aad5231d18f51ad409ce2a19"
                 ;;
             pixel81)
                 mainrepo="https://github.com/PixelExperience/manifest.git"
                 mainbranch="oreo-mr1"
                 localManifestBranch="android-8.1"
                 treble_generate=""
-                ## treble's merged tag is higher than pixel's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## pixel's merged tag is higher than treble's merged tag, copy pixel's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="762989ee61f2f19fa459f92a0044e92decfa4e9b"
+                extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             ## devs freakin changed back mainrepo from PixelExperience-P to PixelExperience
             pixel90)
@@ -489,10 +375,6 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than pixel's merged tag, copy treble's 9.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
-                ## pixel's merged tag is higher than treble's merged tag, copy pixel's 9.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
                 ;;
             posp81)
                 mainrepo="https://github.com/PotatoProject/manifest.git"
@@ -500,10 +382,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="posp"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than posp's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="90ab2ea713fa9b1219cc005a42f41a05f0adf30f"
-                ## posp's merged tag is higher than treble's merged tag, copy posp's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="bbea0203f4df4a972bf4bd823a56ec7295507013"
                 ;;
             slim81)
                 mainrepo="https://github.com/SlimRoms/platform_manifest.git"
@@ -511,10 +389,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="slim"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than slim's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="0865092d7e1dfffcb55904764845db48cfe618c7"
-                ## slim's merged tag is higher than treble's merged tag, copy slim's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="aeaeb26a79525fd13763f84411ceb0d36097b927"
                 ;;
             tipsy81)
                 mainrepo="https://github.com/TipsyOs/platform_manifest.git"
@@ -523,10 +397,6 @@ function get_rom_type() {
                 ## slim based rom
                 treble_generate="slim"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than tipsy's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="90ab2ea713fa9b1219cc005a42f41a05f0adf30f"
-                ## tipsy's merged tag is higher than treble's merged tag, copy tipsy's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="f59003e7559d59b426265cb0c91a757eb5453633"
                 ;;
             xenonhd81)
                 mainrepo="https://github.com/TeamHorizon/platform_manifest.git"
@@ -534,10 +404,6 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="xenonhd"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ## treble's merged tag is higher than xenonhd's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
-                ## xenonhd's merged tag is higher than treble's merged tag, copy xenonhd's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag="5f43b6cd52fe5527fa90ad641b1d87fac7336abd"
                 ;;
             esac
         shift
@@ -621,18 +487,6 @@ function init_main_repo() {
     repo init -u "$mainrepo" -b "$mainbranch"
 }
 
-## repo init mainrepo with treble_merged_tag
-function init_main_repo_a() {
-    ## export to make sure that treble_merged_tag is a clean output without quote
-    export t_m_t=`echo -e "$treble_merged_tag"`
-        if [[ -n "$rom_merged_tag" ]];then
-            repo init -u "$mainrepo" -b "$t_m_t"
-        else
-            echo -e "Alternative function isn't available for this ROM. Please use the Y option instead."
-            echo
-        fi
-}
-
 ## git clone or checkout phh's repository
 function clone_or_checkout() {
     local dir="$1"
@@ -671,16 +525,6 @@ function clone_or_checkout_origin() {
 ## git checkout treble_manifest from my repository
 function init_local_manifest() {
     clone_or_checkout_origin .repo/local_manifests treble_manifest
-}
-
-## function that make use of rom_merged_tag
-function checkout_r_manifest() {
-    ## export to make sure that rom_merged_tag is a clean output without quote
-    export r_m_t=`echo -e "$rom_merged_tag"`
-        if [[ -n "$rom_merged_tag" ]];then
-            cd .repo/local_manifests
-            git checkout "$r_m_t"
-        fi
 }
 
 ## function that initialize patches for fixing bug
@@ -790,21 +634,9 @@ fi
 
 ## initialize build environment
 init_release
-if [[ "$choice_origin_2" =~ ^[Yy]$ ]]; then
-    ## handle command line arguments
-    read -p "Do you want to sync? (y/N): " choice
-    echo
-        if [[ "$choice" =~ ^[Yy]$ ]]; then
-            init_main_repo
-            init_local_manifest
-            init_patches
-            sync_repo
-        fi
-fi
-if [[ "$choice_origin_2" =~ ^[Aa]$ ]]; then
-    init_main_repo_a
+if [[ "$choice" =~ ^[Yy]$ ]]; then
+    init_main_repo
     init_local_manifest
-    checkout_r_manifest
     init_patches
     sync_repo
 fi
