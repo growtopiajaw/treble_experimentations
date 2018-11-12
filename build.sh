@@ -366,7 +366,6 @@ function get_rom_type() {
                 mainbranch="oreo-mr1"
                 localManifestBranch="android-8.1"
                 treble_generate=""
-                extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             ## devs freakin changed back mainrepo from PixelExperience-P to PixelExperience
             pixel90)
