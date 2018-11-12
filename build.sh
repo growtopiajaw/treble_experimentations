@@ -73,7 +73,7 @@ function install_packages() {
     echo -e "Checking required packages for compiling ROM..."
     echo
     sudo apt update
-    sudo apt install --force-yes "${packages[@]}"
+    sudo apt install --allow "${packages[@]}"
 }
 
 ## required packages to be installed for compiling rom
