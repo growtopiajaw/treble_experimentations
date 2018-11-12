@@ -2,7 +2,7 @@
 
 set -e
 
-## merged tags last updated 7 Nov 2018
+## merged tags last updated 12 Nov 2018
 ## treble's latest merged tag is 8.1.0_r48
 
 echo -e "Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update."
@@ -16,13 +16,26 @@ if [ -z "$USER" ];then
     export USER
 fi
 
-## export ~/bin to PATH
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+## export ~/.bin to PATH
+if [ -d "~/.bin" ] ; then
+    PATH="~/.bin:$PATH"
 fi
 
-## treble_experimentations folder
-treble_d="$(busybox dirname $0)"
+## some rom compiling errors are fixed when this variable is exported
+export LC_ALL=C
+
+## rom release folder
+rom_rf="$(date +%y%m%d)"
+
+## script name
+script_n="$(basename $0)"
+
+## detect system type
+if [[ $(uname -s) = "Darwin" ]];then
+    jobs="$(sysctl -n hw.ncpu)"
+elif [[ $(uname -s) = "Linux" ]];then
+    jobs="$(nproc)"
+fi
 
 ## if busybox is installed then proceed, if not then install
 if type busybox >/dev/null 2>&1; then
@@ -36,6 +49,9 @@ elif type apt >/dev/null 2>&1; then
     sudo apt update
     sudo apt install busybox
 fi
+
+## treble_experimentations folder
+treble_d="$(busybox dirname $0)"
 
 ## check for i386 architecture with dpkg --print-foreign-architectures
 if type dpkg >/dev/null 2>&1; then
@@ -60,7 +76,7 @@ function install_packages() {
 }
 
 ## required packages to be installed for compiling rom
-packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
+packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "wget" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
 
 ## find missing packages from the list above and install them
 if [ -f "$treble_d/.p_done.txt" ]; then
@@ -78,7 +94,7 @@ if type git >/dev/null 2>&1; then
 elif type apt >/dev/null 2>&1; then
     echo -e "git is NOT installed. Installing..."
     echo
-    sudo apt install git-core
+    sudo apt install git
     echo -e "Please enter your name for git setup"
     echo -e "This is required to proceed"
     read -p ": " u_name
@@ -99,33 +115,10 @@ elif type apt >/dev/null 2>&1; then
     echo -e "repo is NOT installed. Installing..."
     echo
     cd
-    mkdir -p ~/bin
-    wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/bin
-    chmod +x ~/bin/repo
-fi
-
-## some rom compiling errors are fixed when this variable is exported
-export LC_ALL=C
-
-## export these variable for faster builds
-export USE_CCACHE=1
-export CCACHE_COMPRESS=1
-
-## jack is deprecated since 14 March 2017
-## so disable compiling with it
-export ANDROID_COMPILE_WITH_JACK=false
-
-## rom release folder
-rom_rf="$(date +%y%m%d)"
-
-## script name
-script_n="$(basename $0)"
-
-## detect system type
-if [[ $(uname -s) = "Darwin" ]];then
-    jobs="$(sysctl -n hw.ncpu)"
-elif [[ $(uname -s) = "Linux" ]];then
-    jobs="$(nproc)"
+    mkdir -p "~/.bin"
+    PATH="~/.bin:$PATH"
+    wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/.bin
+    chmod a+x "~/.bin/repo"
 fi
 
 ## if Y then continue normally
@@ -194,17 +187,11 @@ Variants are dash-joined combinations of (in order):
 * SU Selection
   * "su" to include root
   * "nosu" to not include root
-* Build Selection
-  * "eng" for Engineering build
-  * "user" for User/ Production build
-  * "userdebug" for User + Debugging mode build (default)
 
 Example:
 
 * arm-aonly-vanilla-nosu
 * arm64-ab-gapps-su
-* arm-aonly-vanilla-nosu-eng
-* arm64-ab-gapps-su-user
 
 EOF
 }
@@ -245,9 +232,9 @@ function get_rom_type() {
                 treble_generate="aex"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ## treble's merged tag is higher than aex's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
+                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
                 ## aex's merged tag is higher than treble's merged tag, copy aex's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="f0eadfa8bbb8137a1041d306e35dce4aa4e90907"
                 ;;
             aicp81)
                 mainrepo="https://github.com/AICP/platform_manifest.git"
@@ -314,7 +301,7 @@ function get_rom_type() {
                 ## treble's merged tag is higher than aquari's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
                 rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
                 ## aquari's merged tag is higher than treble's merged tag, copy aquari's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="ca8ac1c93d4ead56710ae01cb1cdc3f2cb78aeee"
                 ;;
             bootleggers81)
                 mainrepo="https://github.com/BootleggersROM/manifest.git"
@@ -325,7 +312,7 @@ function get_rom_type() {
                 ## treble's merged tag is higher than bootleggers' merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
                 rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
                 ## bootleggers' merged tag is higher than treble's merged tag, copy bootleggers' 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="9df38df7917a360dce46cf5de1d54c4af463a3cd"
                 ;;
             carbon81)
                 mainrepo="https://github.com/CarbonROM/android.git"
@@ -347,7 +334,7 @@ function get_rom_type() {
                 ## treble's merged tag is higher than cosmic's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
                 rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
                 ## cosmic's merged tag is higher than treble's merged tag, copy cosmic's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="b72bced4114f0a6e729f788ab4761a6eac787073"
                 ;;
             crdroid81)
                 mainrepo="https://github.com/crdroidandroid/android.git"
@@ -380,9 +367,9 @@ function get_rom_type() {
                 treble_generate="du"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ## treble's merged tag is higher than du's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
+                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
                 ## du's merged tag is higher than treble's merged tag, copy du's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="8062c7e22a901810de9bdca6555dd202034b82c2"
                 ;;
             e-0.2)
                 mainrepo="https://gitlab.e.foundation/e/os/android/"
@@ -415,9 +402,9 @@ function get_rom_type() {
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ## treble's merged tag is higher than havoc's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag=""
+                rom_merged_tag="90ab2ea713fa9b1219cc005a42f41a05f0adf30f"
                 ## havoc's merged tag is higher than treble's merged tag (which is almost impossible. almost 5 releases are missed -_- r43 --> r48), copy havoc's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="c742faf37dd209195da84bdf2d21956fd3570059"
                 ;;
             havoc90)
                 mainrepo="https://github.com/Havoc-OS/android_manifest.git"
@@ -470,9 +457,9 @@ function get_rom_type() {
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ## treble's merged tag is higher than omni's merged tag, copy treble's 8.1.0_rXX commit number to rom_merged_tag
-                rom_merged_tag="7c40006c463aed1e902fc7ef87c0926fffb6b31d"
+                rom_merged_tag="ab57e1976ef73c8b0222a583600fcafa03fb7b1b"
                 ## omni's merged tag is higher than treble's merged tag, copy omni's 8.1.0_rXX commit number to treble_merged_tag
-                treble_merged_tag=""
+                treble_merged_tag="b560988b2b56749a06d5afdab39baf0616fa2576"
                 ;;
             rr81)
                 mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
@@ -596,7 +583,6 @@ function parse_variant() {
             local partition_lay=${partition_layout[${piece[1]}]}
             local gapps_select=${gapps_selection[${piece[2]}]}
             local su_select=${su_selection[${piece[3]}]}
-            local build_select=${piece[4]}
 
                 if [[ -z "$soc_arch" || -z "$partition_lay" || -z "$gapps_select" || -z "$su_select" ]]; then
                     >&2 echo "Invalid variant $1"
@@ -604,7 +590,7 @@ function parse_variant() {
                     exit 2
                 fi
 
-echo "treble_${soc_arch}_${partition_lay}${gapps_select}${su_select}-${build_select}"
+echo "treble_${soc_arch}_${partition_lay}${gapps_select}${su_select}-userdebug"
 echo
 }
 
@@ -616,13 +602,10 @@ declare -a variant_name
 function get_variant() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            *-*-*-*-*)
+            *-*-*-*)
                 variant_code[${#variant_code[*]}]=$(parse_variant "$1")
                 variant_name[${#variant_name[*]}]="$1"
                 ;;
-            *-*-*-*)
-                variant_code[${#variant_code[*]}]=$(parse_variant "$1-userdebug")
-                variant_name[${#variant_name[*]}]="$1"
             esac
         shift
     done
@@ -640,7 +623,14 @@ function init_main_repo() {
 
 ## repo init mainrepo with treble_merged_tag
 function init_main_repo_a() {
-    repo init -u "$mainrepo" -b "$treble_merged_tag"
+    ## export to make sure that treble_merged_tag is a clean output without quote
+    export t_m_t=`echo -e "$treble_merged_tag"`
+        if [[ -n "$rom_merged_tag" ]];then
+            repo init -u "$mainrepo" -b "$t_m_t"
+        else
+            echo -e "Alternative function isn't available for this ROM. Please use the Y option instead."
+            echo
+        fi
 }
 
 ## git clone or checkout phh's repository
@@ -685,10 +675,12 @@ function init_local_manifest() {
 
 ## function that make use of rom_merged_tag
 function checkout_r_manifest() {
-    if [[ -n "$rom_merged_tag" ]];then
-        cd .repo/local_manifests
-        git checkout "$rom_merged_tag"
-    fi
+    ## export to make sure that rom_merged_tag is a clean output without quote
+    export r_m_t=`echo -e "$rom_merged_tag"`
+        if [[ -n "$rom_merged_tag" ]];then
+            cd .repo/local_manifests
+            git checkout "$r_m_t"
+        fi
 }
 
 ## function that initialize patches for fixing bug
@@ -708,7 +700,7 @@ function init_patches() {
 
 ## repo sync duhh
 function sync_repo() {
-    repo sync -c -j "$jobs" --force-sync
+    repo sync -c -j "$jobs" --force-sync --no-tags --no-clone-bundle
 }
 
 ## patch device related bugs
