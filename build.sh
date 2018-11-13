@@ -290,7 +290,7 @@ function get_rom_type() {
                 ;;
             du81)
                 mainrepo="https://gitlab.com/GrowtopiaJaw/du_android_manifest.git"
-                mainbranch="o8x"
+                mainbranch="o8x-gsi"
                 localManifestBranch="android-8.1"
                 ## aokp based rom, but not forever
                 treble_generate="du"
@@ -313,8 +313,8 @@ function get_rom_type() {
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             havoc81)
-                mainrepo="https://github.com/Havoc-OS/android_manifest.git"
-                mainbranch="oreo"
+                mainrepo="https://github.com/GrowtopiaJaw/havoc_android_manifest.git"
+                mainbranch="oreo-gsi"
                 localManifestBranch="android-8.1"
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
