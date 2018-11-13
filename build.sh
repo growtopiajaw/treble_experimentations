@@ -289,7 +289,7 @@ function get_rom_type() {
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             du81)
-                mainrepo="https://github.com/DirtyUnicorns/android_manifest.git"
+                mainrepo="https://gitlab.com/GrowtopiaJaw/du_android_manifest.git"
                 mainbranch="o8x"
                 localManifestBranch="android-8.1"
                 ## aokp based rom, but not forever
@@ -297,7 +297,7 @@ function get_rom_type() {
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             e-0.2)
-                mainrepo="https://gitlab.e.foundation/e/os/android/"
+                mainrepo="https://gitlab.e.foundation/e/os/android.git"
                 mainbranch="eelo-0.2"
                 ## e-0.2 = lineage 15.1 = android-8.1 = facepalm = who changed localmanifestbranch to android-9.0
                 localManifestBranch="android-8.1"
