@@ -7,9 +7,6 @@
 
 # Community
 
-* IRC: irc://irc.freenode.net/#phh-treble
-* WebIRC: http://webchat.freenode.net/?channels=%23phh-treble&uio=d4
-* Matrix: #freenode_#phh-treble:matrix.org
 * Telegram https://t.me/phhtreble
 * xda-developers threads: https://forum.xda-developers.com/search.php?do=finduser&u=1915408&starteronly=1
 
@@ -25,12 +22,14 @@ For example:
 * you just need to run the script. All setup to start building are already included in this script
 * thanks to me, your workload has been reduced :D
 
-    git clone https://github.com/GrowtopiaJaw/treble_experimentations
-    mkdir lineage151
-    cd lineage151
-    bash ../treble_experimentations/build.sh lineage151 \
-    arm-aonly-gapps-su \
-    arm64-ab-go-nosu
+```
+git clone https://github.com/GrowtopiaJaw/treble_experimentations`
+mkdir lineage151`
+cd lineage151`
+bash ../treble_experimentations/build.sh lineage151 \
+arm-aonly-gapps-su \
+arm64-ab-go-nosu
+```
 
 The script should provide a help message if you pass something it doesn't understand
 
