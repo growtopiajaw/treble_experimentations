@@ -75,7 +75,7 @@ function install_packages() {
 }
 
 ## required packages to be installed for compiling rom
-packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "git" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python" "python3" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "wget" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
+packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "gnupg" "gperf" "g++-multilib" "imagemagick" "lib32ncurses5-dev" "lib32readline6-dev" "lib32z1-dev" "libc6-dev" "libc6-dev-i386" "libc6:i386" "libgl1-mesa-dev" "libgl1-mesa-glx:i386" "liblz4-tool" "libncurses5-dev" "libncurses5-dev:i386" "libncurses5:i386" "libreadline6-dev:i386" "libsdl1.2-dev" "libstdc++6:i386" "libwxgtk3.0-dev" "libx11-dev" "libx11-dev:i386" "libxml2" "libxml2-utils" "lsof" "lzop" "openjdk-8-jdk" "pngcrush" "python" "python3" "python-markdown" "schedtool" "squashfs-tools" "tofrodos" "unzip" "wget" "x11proto-core-dev" "xsltproc" "zip" "zlib1g-dev" "zlib1g-dev:i386")
 
 ## find missing packages from the list above and install them
 if [ -f "$treble_d/.p_done.txt" ]; then
@@ -135,11 +135,14 @@ RAM=$(free | awk '/^Mem:/{ printf("%0.f", $2/(1024^2))}')
 ## warn users with less than 5gb of ram
 if [[ "$RAM" -lt 5 ]]; then
     echo -e "${YELLOW}Your system's RAM is less than 5GB. Compiling may fail as jack-server needs at least 5GB of RAM.${RESET}"
+    echo
     read -p $'\e[1;33mContinue anyway? (y/N): \e[0m' choice_ram
+    echo
         if [[ "$choice_ram" =~ ^[Nn]$ ]]; then
             exit 1
         else
             echo -e "${LIGHTRED}Proceed at your own risk!${RESET}"
+            echo
         fi
 fi
     
