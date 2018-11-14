@@ -1,16 +1,9 @@
 #! /usr/bin/env bash
 
+## exit immediately if a command exits non-zero
 set -e
 
-## news
-echo -e "Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update."
-echo
-read -p "Press enter to continue"
-clear
-
-## handle command line arguments
-read -p "Do you want to sync? (y/N): " choice
-
+##START#VARIABLE###############################################################################################################################################################################################################################################################################################################################################################################################################################
 ## export username
 if [ -z "$USER" ];then
     USER="$(id -un)"
@@ -49,19 +42,26 @@ elif type apt >/dev/null 2>&1; then
     echo
     sudo apt update
     sudo apt -y install busybox
+else
+    echo -e "busybox is NOT installed. Please install it."
+    echo -e "Google is your friend"
+    exit 1
 fi
 
 ## treble_experimentations folder
 treble_d="$(busybox dirname $0)"
 
+## export color config file
+export $(cat "$treble_d"/config/color.cfg | grep -v ^# | busybox xargs)
+
 ## check for i386 architecture with dpkg --print-foreign-architectures
 if type dpkg >/dev/null 2>&1; then
     i386=$(dpkg --print-foreign-architectures | awk '{print $1}')
         if [[ "$i386" == "i386" ]]; then
-            echo -e "i386 architecture found! Proceeding..."
+            echo -e "${LIGHTGREEN}i386 architecture found! Proceeding...${RESET}"
             echo
         else
-            echo -e "i386 architecture NOT found. Adding..."
+            echo -e "${LIGHTRED}i386 architecture NOT found. Adding...${RESET}"
             echo
             sudo dpkg --add-architecture i386
             sudo apt update
@@ -70,8 +70,6 @@ fi
 
 ## function to install missing packages on apt/ dpkg based system
 function install_packages() {
-    echo -e "Checking required packages for compiling ROM..."
-    echo
     sudo apt update
     sudo apt -y install "${packages[@]}"
 }
@@ -81,39 +79,46 @@ packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "
 
 ## find missing packages from the list above and install them
 if [ -f "$treble_d/.p_done.txt" ]; then
-    echo -e "All packages are installed. Proceeding..."
+    echo -e "${LIGHTGREEN}All packages are installed. Proceeding...${RESET}"
     echo
 elif type apt >/dev/null 2>&1; then
+    echo -e "${LIGHTYELLOW}Installing required packages for compiling ROM...${RESET}"
     dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
     touch "$treble_d/.p_done.txt"
+else
+    echo -e "${LIGHTRED}Non-debian based distribution detected. Proceed at your own risk!${RESET}"
 fi
 
 ## if git is installed then proceed, if not then install and setup
 if type git >/dev/null 2>&1; then
-    echo -e "git is installed. Proceeding..."
+    echo -e "${LIGHTGREEN}git is installed. Proceeding...${RESET}"
     echo
 elif type apt >/dev/null 2>&1; then
-    echo -e "git is NOT installed. Installing..."
+    echo -e "${LIGHTRED}git is NOT installed. Installing...${RESET}"
     echo
     sudo apt -y install git
-    echo -e "Please enter your name for git setup"
-    echo -e "This is required to proceed"
+    echo -e "${YELLOW}Please enter your name for git setup${RESET}"
+    echo -e "${LIGHTRED}This is required to proceed${RESET}"
     read -p ": " u_name
     echo
     git config --global user.name "$u_name"
-    echo -e "Please enter your email address for git setup"
-    echo -e "This is also required to proceed"
+    echo -e "${LIGHTGREEN}Please enter your email address for git setup${RESET}"
+    echo -e "${LIGHTRED}This is also required to proceed${RESET}"
     read -p ": " u_email
     echo
     git config --global user.email "$u_email"
+else
+    echo -e "${LIGHTRED}git is NOT installed. Please install it.${RESET}"
+    echo -e "${YELLOW}Google is your friend${RESET}"
+    exit 1
 fi
 
 ## if repo is installed then proceed, if not install
 if type repo >/dev/null 2>&1; then
-    echo -e "repo is installed. Proceeding..."
+    echo -e "${LIGHTGREEN}repo is installed. Proceeding...${RESET}"
     echo
-elif type apt >/dev/null 2>&1; then
-    echo -e "repo is NOT installed. Installing..."
+else
+    echo -e "${LIGHTRED}repo is NOT installed. Installing...${RESET}"
     echo
     cd
     mkdir -p ~/.bin
@@ -121,6 +126,32 @@ elif type apt >/dev/null 2>&1; then
     wget 'https://storage.googleapis.com/git-repo-downloads/repo' -P ~/.bin
     chmod a+x ~/.bin/repo
 fi
+
+## calculate system's total ram
+## if you have no idea what this does, just assume 2+2 is 4 -1 that's 3 quick mafh (lolz) (I typed mafh on purpose)
+RAM=$(free | awk '/^Mem:/{ printf("%0.f", $2/(1024^2))}')
+##END#VARIABLE#################################################################################################################################################################################################################################################################################################################################################################################################################################
+
+## warn users with less than 5gb of ram
+if [[ "$RAM" -lt 5 ]]; then
+    echo -e "${YELLOW}Your system's RAM is less than 5GB. Compiling may fail as jack-server needs at least 5GB of RAM.${RESET}"
+    read -p "${YELLOW}Continue anyway? (y/N): ${RESET}" choice_ram
+        if [[ "$choice_ram" =~ ^[Nn]$ ]]; then
+            exit 1
+        else
+            echo -e "${LIGHTRED}Proceed at your own risk!${RESET}"
+        fi
+fi
+    
+## news
+echo -e "${LIGHTRED}Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update.${RESET}"
+echo
+read -p "${YELLOW}Press enter to continue${RESET}"
+echo
+
+## handle command line arguments
+read -p "${YELLOW}Do you want to sync? (y/N): ${RESET}" choice
+echo
 
 ## help
 function help() {
@@ -313,7 +344,7 @@ function get_rom_type() {
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             havoc81)
-                mainrepo="https://github.com/GrowtopiaJaw/havoc_android_manifest.git"
+                mainrepo="https://gitlab.com/GrowtopiaJaw/havoc_android_manifest.git"
                 mainbranch="oreo-gsi"
                 localManifestBranch="android-8.1"
                 treble_generate="havoc"
@@ -586,27 +617,28 @@ function build_variant() {
 
 ## configure ram/ memory limit that can be used by jack-server
 function jack_env() {
-    RAM=$(free | awk '/^Mem:/{ printf("%0.f", $2/(1024^2))}') #calculating how much RAM (wow, such ram)
-        if [[ "$RAM" -lt 16 ]];then #if we're poor guys with less than 16gb
-	        export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx"$((RAM -1))"G"
-        fi
+    ## systems with less than 16gb, configure ram -1gb for jack-server
+    ## example, system's total ram is 6gb. 6-1=5 (quick mafh lmao) configure 5gb ram for jack-server
+    if [[ "$RAM" -lt 16 ]];then
+	    export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx"$((RAM -1))"G"
+    fi
 }
 
 ## function to compress system image
 function compress_system() {
     if [[ "$USER" != growtopiajaw ]]; then
         cd out/target/product/*/
-        echo -e "Compressing system-$2.img..."
+        echo -e "${YELLOW}Compressing system-$2.img...${RESET}"
         echo
         xz -cv system*.img
-        echo -e "Done!"
+        echo -e "${LIGHTGREEN}Done!${RESET}"
         echo
     else
         cd "$treble_d/release/$rom_rf"
-        echo -e "Compressing system-$2.img..."
+        echo -e "${YELLOW}Compressing system-$2.img...${RESET}"
         echo
         xz -cv system*.img
-        echo -e "Done!"
+        echo -e "${LIGHTGREEN}Done!${RESET}"
         echo
     fi
 }
@@ -651,17 +683,17 @@ for (( idx=0; idx < ${#variant_code[*]}; idx++ )); do
 done
 
 ## ask user if they want to compress system images
-read -p "Do you want to compress system-$2.img? (y/N): " choice_origin
+read -p "${YELLOW}Do you want to compress system-$2.img? (y/N): ${RESET}" choice_origin
 echo
 
 ## if yes then proceed with the image compressing. if no then done
 if [[ "$choice_origin" =~ ^[Yy]$ ]]; then
     compress_system
         elif [[ "$USER" != growtopiajaw ]]; then
-            echo -e "Your system-$2.img is at /out/target/product/*/system-$2.img"
+            echo -e "${LIGHTGREEN}Your system-$2.img is at /out/target/product/*/system-$2.img${RESET}"
             echo
         else
-            echo -e "Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img"
+            echo -e "${LIGHTGREEN}Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img${RESET}"
             echo
 fi
 
@@ -670,16 +702,16 @@ fi
 ## creating the config.ini part is the hardest
 ## gud luck n baii!!
 if [[ "$USER" == growtopiajaw ]]; then
-    read -p "Wanna release ROM to GitHub m8? (y/N) " choice_r
+    read -p "Wanna release ROM to GitHub m8? (y/N) ${RESET}" choice_r
     echo
         if [[ "$choice_r" =~ ^[Yy]$ ]]; then
             pip install -r "$treble_d/release/requirements.txt"
-            read -p "ROM name? " r_name
-            echo -e "Oke $r_name it is!"
+            read -p "${YELLOW}ROM name? ${RESET}" r_name
+            echo -e "${LIGHTGREEN}Oke $r_name it is!${RESET}"
             echo
-            read -p "Version ? " r_version
-            echo -e "Naisss"
+            read -p "${YELLOW}Version ? ${RESET}" r_version
+            echo -e "${LIGHTGREEN}Naisss${RESET}"
             echo
-            python3 "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
+            python "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
         fi
 fi
