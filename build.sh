@@ -135,7 +135,7 @@ RAM=$(free | awk '/^Mem:/{ printf("%0.f", $2/(1024^2))}')
 ## warn users with less than 5gb of ram
 if [[ "$RAM" -lt 5 ]]; then
     echo -e "${YELLOW}Your system's RAM is less than 5GB. Compiling may fail as jack-server needs at least 5GB of RAM.${RESET}"
-    read -p "${YELLOW}Continue anyway? (y/N): ${RESET}" choice_ram
+    read -p $'\e[1;33mContinue anyway? (y/N): \e[0m' choice_ram
         if [[ "$choice_ram" =~ ^[Nn]$ ]]; then
             exit 1
         else
@@ -146,17 +146,23 @@ fi
 ## news
 echo -e "${LIGHTRED}Havoc-OS Oreo is broken for now. I recommend to NOT build this ROM and please wait for update.${RESET}"
 echo
-read -p "${YELLOW}Press enter to continue${RESET}"
+read -p $'\e[1;33mPress enter to continue\e[0m'
 echo
 
 ## handle command line arguments
-read -p "${YELLOW}Do you want to sync? (y/N): ${RESET}" choice
+read -p $'\e[1;33mDo you want to sync? (y/N): \e[0m' choice
 echo
+
+## cat does not process backslash escape sequences
+## alternative fix
+e=$(printf "\e")
+YELLOW_H="$e[1;33m"
+RESET_H="$e[0m"
 
 ## help
 function help() {
     cat <<EOF
-Syntax:
+${YELLOW_H}Syntax:
 
   $script_n [-j 2] [ROM TYPE] [VARIANT]
 
@@ -219,7 +225,7 @@ Example:
 
 * arm-aonly-vanilla-nosu
 * arm64-ab-gapps-su
-
+${RESET_H}
 EOF
 }
 
@@ -481,7 +487,7 @@ function parse_variant() {
             local su_select=${su_selection[${piece[3]}]}
 
                 if [[ -z "$soc_arch" || -z "$partition_lay" || -z "$gapps_select" || -z "$su_select" ]]; then
-                    >&2 echo "Invalid variant $1"
+                    >&2 echo "${LIGHTRED}Invalid variant $1${RESET}"
                     >&2 help
                     exit 2
                 fi
@@ -683,7 +689,7 @@ for (( idx=0; idx < ${#variant_code[*]}; idx++ )); do
 done
 
 ## ask user if they want to compress system images
-read -p "${YELLOW}Do you want to compress system-$2.img? (y/N): ${RESET}" choice_origin
+read -p $'\e[1;33mDo you want to compress system-$2.img? (y/N): \e[0m' choice_origin
 echo
 
 ## if yes then proceed with the image compressing. if no then done
@@ -702,14 +708,14 @@ fi
 ## creating the config.ini part is the hardest
 ## gud luck n baii!!
 if [[ "$USER" == growtopiajaw ]]; then
-    read -p "Wanna release ROM to GitHub m8? (y/N) ${RESET}" choice_r
+    read -p $'\e[1;33mWanna release ROM to GitHub m8? (y/N) \e[0m' choice_r
     echo
         if [[ "$choice_r" =~ ^[Yy]$ ]]; then
             pip install -r "$treble_d/release/requirements.txt"
-            read -p "${YELLOW}ROM name? ${RESET}" r_name
+            read -p $'\e[1;33mROM name? \e[0m' r_name
             echo -e "${LIGHTGREEN}Oke $r_name it is!${RESET}"
             echo
-            read -p "${YELLOW}Version ? ${RESET}" r_version
+            read -p $'\e[1;33mVersion ? \e[0m' r_version
             echo -e "${LIGHTGREEN}Naisss${RESET}"
             echo
             python "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
