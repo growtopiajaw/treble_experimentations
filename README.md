@@ -1,3 +1,10 @@
+# Statistics
+
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v1/lineage151-arm64-aonly-vanilla-nosu.img.svg)
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v1/lineage151-arm64-aonly-vanilla-nosu.img.xz.svg)
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v2/du81-arm64-aonly-vanilla-nosu.img.svg)
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v2/du81-arm64-aonly-vanilla-nosu.img.xz.svg)
+
 # Community
 
 * IRC: irc://irc.freenode.net/#phh-treble
