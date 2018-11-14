@@ -82,7 +82,7 @@ if [ -f "$treble_d/.p_done.txt" ]; then
     echo -e "${LIGHTGREEN}All packages are installed. Proceeding...${RESET}"
     echo
 elif type apt >/dev/null 2>&1; then
-    echo -e "${LIGHTYELLOW}Installing required packages for compiling ROM...${RESET}"
+    echo -e "${YELLOW}Installing required packages for compiling ROM...${RESET}"
     dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
     touch "$treble_d/.p_done.txt"
 else
