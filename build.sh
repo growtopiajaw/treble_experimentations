@@ -490,7 +490,7 @@ function parse_variant() {
             local su_select=${su_selection[${piece[3]}]}
 
                 if [[ -z "$soc_arch" || -z "$partition_lay" || -z "$gapps_select" || -z "$su_select" ]]; then
-                    >&2 echo "${LIGHTRED}Invalid variant $1${RESET}"
+                    >&2 echo -e "${LIGHTRED}Invalid variant $1${RESET}"
                     >&2 help
                     exit 2
                 fi
