@@ -182,12 +182,11 @@ ROM Types:
   aosp80
   aosp81
   aosp90
-  aospa81
-  aospcaf81
+  aospa90
   aquari81
   bootleggers81
   carbon81
-  cirtuscaf81
+  cirtuscaf90
   cosmic81
   crdroid81
   dot81
@@ -288,19 +287,12 @@ function get_rom_type() {
                 treble_generate=""
                 extra_make_options=""
                 ;;
-            aospa81)
+            aospa90)
                 mainrepo="https://github.com/AOSPA/manifest.git"
-                mainbranch="oreo-mr1"
-                localManifestBranch="android-8.1"
+                mainbranch="pie"
+                localManifestBranch="android-9.0"
                 treble_generate="aospa"
                 extra_make_options="WITHOUT_CHECK_API=true"
-                ;;
-            aospcaf81)
-                mainrepo="https://github.com/AOSP-CAF/platform_manifest.git"
-                mainbranch="o-mr1"
-                localManifestBranch="android-8.1"
-                treble_generate=""
-                extra_make_options=""
                 ;;
             aquari81)
                 mainrepo="https://github.com/AquariOS/manifest.git"
@@ -323,10 +315,10 @@ function get_rom_type() {
                 treble_generate="carbon"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
-            citruscaf81)
+            citruscaf90)
                 mainrepo="https://github.com/Citrus-CAF/manifest.git"
-                mainbranch="o8x"
-                localManifestBranch="android-8.1"
+                mainbranch="p9x"
+                localManifestBranch="android-9.0"
                 treble_generate="citruscaf"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
