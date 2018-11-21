@@ -299,7 +299,7 @@ function get_rom_type() {
                 mainrepo="https://github.com/AOSP-CAF/platform_manifest.git"
                 mainbranch="o-mr1"
                 localManifestBranch="android-8.1"
-                treble_generate="aospcaf"
+                treble_generate=""
                 extra_make_options=""
                 ;;
             aquari81)
