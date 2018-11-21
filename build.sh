@@ -182,11 +182,9 @@ ROM Types:
   aosp80
   aosp81
   aosp90
-  aospa90
   aquari81
   bootleggers81
   carbon81
-  cirtuscaf90
   cosmic81
   crdroid81
   dot81
@@ -207,7 +205,7 @@ ROM Types:
   tipsy81
   xenonhd81
 
-* Currently 32 types of ROM are available :D
+* Currently 28 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -287,13 +285,6 @@ function get_rom_type() {
                 treble_generate=""
                 extra_make_options=""
                 ;;
-            aospa90)
-                mainrepo="https://github.com/AOSPA/manifest.git"
-                mainbranch="pie"
-                localManifestBranch="android-9.0"
-                treble_generate="aospa"
-                extra_make_options="WITHOUT_CHECK_API=true"
-                ;;
             aquari81)
                 mainrepo="https://github.com/AquariOS/manifest.git"
                 mainbranch="a8.1.0"
@@ -313,13 +304,6 @@ function get_rom_type() {
                 mainbranch="cr-6.1"
                 localManifestBranch="android-8.1"
                 treble_generate="carbon"
-                extra_make_options="WITHOUT_CHECK_API=true"
-                ;;
-            citruscaf90)
-                mainrepo="https://github.com/Citrus-CAF/manifest.git"
-                mainbranch="p9x"
-                localManifestBranch="android-9.0"
-                treble_generate="citruscaf"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             cosmic81)
