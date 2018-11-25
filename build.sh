@@ -24,6 +24,9 @@ rom_rf="$(date +%y%m%d)"
 ## script name
 script_n="$(basename $0)"
 
+## export jack utilites location to PATH
+export PATH=prebuilts/sdk/tools:$PATH
+
 ## detect system type
 if [[ $(uname -s) = "Darwin" ]];then
     jobs="$(sysctl -n hw.ncpu)"
@@ -613,9 +616,20 @@ function patch_things() {
 ## function to compile rom
 function build_variant() {
     lunch "$1"
-    make "$extra_make_options" BUILD_NUMBER="$rom_rf" installclean
+    read -p $'\e[1;33mDo you want to clean the previous build directory/ make clean? (Y/n) \e[0m' make_c
+    echo
+        if [[ "$make_c" =~ ^[Yy]$ ]]; then
+            make "$extra_make_options" BUILD_NUMBER="$rom_rf" installclean
+        fi
     make "$extra_make_options" BUILD_NUMBER="$rom_rf" -j "$jobs" systemimage
-    make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
+        if [[ "$USER" !=growtopiajaw ]]; then
+            make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
+        else
+            read -p $'\e[1;33mWanna run vndk-test-sepolicy m8? (y/N) \e[0m' choice_vndk
+                if [[ "$choice_vndk" =~ ^[Yy]$ ]]; then
+                    make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
+                fi
+        fi
         if [[ "$USER" != growtopiajaw ]]; then
             cd out/target/product/*/
             mv system.img "system-$2.img"
@@ -630,6 +644,9 @@ function jack_env() {
     ## example, system's total ram is 6gb. 6-1=5 (quick mafh lmao) configure 5gb ram for jack-server
     if [[ "$RAM" -lt 16 ]];then
 	    export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx"$((RAM -1))"G"
+	    ## kill, then start jack-server manually or else exported variable won't take affect and Xmx value will not be configured properly thus result in "Out of memory" error
+	    jack-admin kill-server
+	    jack-admin start-server
     fi
 }
 
