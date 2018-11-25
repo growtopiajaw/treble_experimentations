@@ -622,7 +622,7 @@ function build_variant() {
             make "$extra_make_options" BUILD_NUMBER="$rom_rf" installclean
         fi
     make "$extra_make_options" BUILD_NUMBER="$rom_rf" -j "$jobs" systemimage
-        if [[ "$USER" !=growtopiajaw ]]; then
+        if [[ "$USER" != growtopiajaw ]]; then
             make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
         else
             read -p $'\e[1;33mWanna run vndk-test-sepolicy m8? (y/N) \e[0m' choice_vndk
