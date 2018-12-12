@@ -226,11 +226,17 @@ Variants are dash-joined combinations of (in order):
 * SU Selection
   * "su" to include root
   * "nosu" to not include root
+* Build Selection
+  * "eng" for Engineering build
+  * "user" for User/ Production build
+  * "userdebug" for User + Debugging mode build (default)
 
 Example:
 
 * arm-aonly-vanilla-nosu
 * arm64-ab-gapps-su
+* arm-aonly-vanilla-nosu-eng
+* arm64-ab-gapps-su-user
 ${RESET_H}
 EOF
 }
@@ -491,6 +497,7 @@ function parse_variant() {
             local partition_lay=${partition_layout[${piece[1]}]}
             local gapps_select=${gapps_selection[${piece[2]}]}
             local su_select=${su_selection[${piece[3]}]}
+            local build_select=${piece[4]}
 
                 if [[ -z "$soc_arch" || -z "$partition_lay" || -z "$gapps_select" || -z "$su_select" ]]; then
                     >&2 echo -e "${LIGHTRED}Invalid variant $1${RESET}"
@@ -498,7 +505,7 @@ function parse_variant() {
                     exit 2
                 fi
 
-echo "treble_${soc_arch}_${partition_lay}${gapps_select}${su_select}-userdebug"
+echo "treble_${soc_arch}_${partition_lay}${gapps_select}${su_select}-${build_select}"
 echo
 }
 
@@ -510,8 +517,12 @@ declare -a variant_name
 function get_variant() {
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            *-*-*-*)
+            *-*-*-*-*)
                 variant_code[${#variant_code[*]}]=$(parse_variant "$1")
+                variant_name[${#variant_name[*]}]="$1"
+                ;;
+            *-*-*-*)
+                variant_code[${#variant_code[*]}]=$(parse_variant "$1-userdebug")
                 variant_name[${#variant_name[*]}]="$1"
                 ;;
             esac
