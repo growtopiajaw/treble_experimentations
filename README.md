@@ -8,6 +8,8 @@
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v3/lineage151-arm64-aonly-vanilla-nosu.img.xz.svg)
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v4/du81-arm64-aonly-vanilla-nosu.img.svg)
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v4/du81-arm64-aonly-vanilla-nosu.img.xz.svg)
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v5/lineage151-arm64-aonly-vanilla-nosu.img.svg)
+* ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v5/lineage151-arm64-aonly-vanilla-nosu.img.xz.svg)
 
 # Community
 
