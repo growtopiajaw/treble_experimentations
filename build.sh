@@ -686,14 +686,14 @@ function compress_system() {
         cd out/target/product/*/
         echo -e "${YELLOW}Compressing system-$2.img...${RESET}"
         echo
-        xz -cv system*.img
+        xz -cv -T$jobs system*.img
         echo -e "${LIGHTGREEN}Done!${RESET}"
         echo
     else
         cd "$treble_d/release/$rom_rf"
         echo -e "${YELLOW}Compressing system-$2.img...${RESET}"
         echo
-        xz -cv system*.img
+        xz -cv -T$jobs system*.img
         echo -e "${LIGHTGREEN}Done!${RESET}"
         echo
     fi
