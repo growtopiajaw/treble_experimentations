@@ -18,6 +18,9 @@ fi
 ## some rom compiling errors are fixed when this variable is exported
 export LC_ALL=C
 
+## GApps PATH
+export GAPPS_SOURCES_PATH=vendor/opengapps/sources/
+
 ## rom release folder
 rom_rf="$(date +%y%m%d)"
 
