@@ -202,6 +202,7 @@ ROM Types:
   mokee81
   omni81
   rr81
+  rr90
   pixel81
   pixel90
   posp81
@@ -415,6 +416,13 @@ function get_rom_type() {
                 mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
                 mainbranch="oreo"
                 localManifestBranch="android-8.1"
+                treble_generate="rr"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            rr90)
+                mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
+                mainbranch="pie"
+                localManifestBranch="android-9.0"
                 treble_generate="rr"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
