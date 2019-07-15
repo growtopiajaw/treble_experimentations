@@ -39,12 +39,12 @@ if type busybox >/dev/null 2>&1; then
     echo
     echo -e "busybox is installed. Proceeding..."
     echo
-elif type apt >/dev/null 2>&1; then
+elif type apt-get >/dev/null 2>&1; then
     echo
     echo -e "busybox is NOT installed. Installing..."
     echo
-    sudo apt update
-    sudo apt -y install busybox
+    sudo apt-get update
+    sudo apt-get -y install busybox
 else
     echo -e "busybox is NOT installed. Please install it."
     echo -e "Google is your friend"
@@ -67,14 +67,14 @@ if type dpkg >/dev/null 2>&1; then
             echo -e "${LIGHTRED}i386 architecture NOT found. Adding...${RESET}"
             echo
             sudo dpkg --add-architecture i386
-            sudo apt update
+            sudo apt-get update
         fi
 fi
 
 ## function to install missing packages on apt/ dpkg based system
 function install_packages() {
-    sudo apt update
-    sudo apt -y install "${packages[@]}"
+    sudo apt-get update
+    sudo apt-get -y install "${packages[@]}"
 }
 
 ## required packages to be installed for compiling rom
@@ -84,7 +84,7 @@ packages=("bc" "bison" "build-essential" "ccache" "curl" "flex" "gcc-multilib" "
 if [ -f "$treble_d/.p_done.txt" ]; then
     echo -e "${LIGHTGREEN}All packages are installed. Proceeding...${RESET}"
     echo
-elif type apt >/dev/null 2>&1; then
+elif type apt-get >/dev/null 2>&1; then
     echo -e "${YELLOW}Installing required packages for compiling ROM...${RESET}"
     dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
     touch "$treble_d/.p_done.txt"
@@ -96,10 +96,10 @@ fi
 if type git >/dev/null 2>&1; then
     echo -e "${LIGHTGREEN}git is installed. Proceeding...${RESET}"
     echo
-elif type apt >/dev/null 2>&1; then
+elif type apt-get >/dev/null 2>&1; then
     echo -e "${LIGHTRED}git is NOT installed. Installing...${RESET}"
     echo
-    sudo apt -y install git
+    sudo apt-get -y install git
     echo -e "${YELLOW}Please enter your name for git setup${RESET}"
     echo -e "${LIGHTRED}This is required to proceed${RESET}"
     read -p ": " u_name
