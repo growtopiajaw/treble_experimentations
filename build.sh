@@ -613,7 +613,7 @@ function init_patches() {
 
 ## repo sync duhh
 function sync_repo() {
-    repo sync -c -j "$jobs" --force-sync --no-tags --no-clone-bundle
+    repo sync -c -j "$jobs" -f --force-sync --no-tags --no-clone-bundle --optimized-fetch --prune
 }
 
 ## patch device related bugs
