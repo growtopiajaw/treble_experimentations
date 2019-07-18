@@ -204,6 +204,7 @@ ROM Types:
   lineage160
   mokee81
   omni81
+  omni90
   rr81
   rr90
   pixel81
@@ -412,6 +413,13 @@ function get_rom_type() {
                 mainrepo="https://github.com/omnirom/android.git"
                 mainbranch="android-8.1"
                 localManifestBranch="android-8.1"
+                treble_generate="omni"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            omni90)
+                mainrepo="https://github.com/omnirom/android.git"
+                mainbranch="android-9.0"
+                localManifestBranch="android-9.0"
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
