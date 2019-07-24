@@ -20,6 +20,12 @@
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v5/lineage151-arm64-aonly-vanilla-nosu.img.svg)
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v5/lineage151-arm64-aonly-vanilla-nosu.img.xz.svg)
 
+## Analysis
+* ![GitHub language count](https://img.shields.io/github/languages/count/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub search hit](https://img.shields.io/github/search/GrowtopiaJaw/treble_experimentations/treble.svg)
+* ![GitHub top language](https://img.shields.io/github/languages/top/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/GrowtopiaJaw/treble_experimentations.svg)
+
 # Community
 
 * Telegram https://t.me/phhtreble
