@@ -52,7 +52,7 @@ clone this repository, then:
         -v $(pwd)/../treble_output:/treble_output \
         -w /treble_output \
         treble \
-        /bin/bash /treble/build-dakkar.sh rr \
+        /bin/bash /treble/build.sh rr81 \
         arm-aonly-gapps-su \
         arm64-ab-go-nosu
 
