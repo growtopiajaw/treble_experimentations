@@ -59,7 +59,7 @@ else
     echo -e "${GRAY}    published by the Free Software Foundation${RESET}"
     echo
     echo -e "${LIGHTRED}You must accept the license in order to continue or type 'n' to exit the program${RESET}"
-    read -p ": " choice_license
+    read -p $'\e[1;33mDo you agree to the terms of the license? (Y/n): \e[0m' choice_license
         if [[ "$choice_license" =~ ^[Nn]$ ]]; then
             exit 1
         else
