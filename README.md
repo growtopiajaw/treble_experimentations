@@ -39,9 +39,9 @@
 * ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v3.svg)
 * ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v4.svg)
 * ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v5.svg)
-![GitHub contributors](https://img.shields.io/github/contributors/GrowtopiaJaw/treble_experimentations.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/GrowtopiaJaw/treble_experimentations.svg)
-![GitHub Release Date](https://img.shields.io/github/release-date/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub contributors](https://img.shields.io/github/contributors/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub last commit](https://img.shields.io/github/last-commit/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub Release Date](https://img.shields.io/github/release-date/GrowtopiaJaw/treble_experimentations.svg)
 
 # Community
 
