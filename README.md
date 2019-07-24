@@ -26,6 +26,10 @@
 * ![GitHub top language](https://img.shields.io/github/languages/top/GrowtopiaJaw/treble_experimentations.svg)
 * ![Snyk Vulnerabilities for GitHub Repo (Specific Manifest)](https://img.shields.io/snyk/vulnerabilities/github/GrowtopiaJaw/treble_experimentations/release/requirements.txt.svg)
 
+## Size
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/GrowtopiaJaw/treble_experimentations.svg)
+![GitHub repo size](https://img.shields.io/github/repo-size/GrowtopiaJaw/treble_experimentations.svg)
+
 # Community
 
 * Telegram https://t.me/phhtreble
