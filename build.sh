@@ -37,6 +37,39 @@ elif [[ $(uname -s) = "Linux" ]];then
     jobs="$(nproc)"
 fi
 
+## clear screen to start fresh
+clear
+
+## treble_experimentations folder
+treble_d="$(busybox dirname $0)"
+
+## export color config file
+export $(cat "$treble_d"/config/color.cfg | grep -v ^# | busybox xargs)
+
+## GNU GPL3 License
+if [ -f "$treble_d/.l_done.txt" ]; then
+    echo -e "${LIGHTGREEN}You agree to the terms of the GNU General Public License version 3${RESET}"
+    echo -e "${LIGHTGREEN}You may continue${RESET}"
+    echo
+else
+    echo -e "${GRAY}    treble_experimentations  Copyright (C) 2018-2019  Growtopia Jaw${RESET}"
+    echo -e "${GRAY}    This program comes with ABSOLUTELY NO WARRANTY.${RESET}"
+    echo -e "${GRAY}    This is free software, and you are welcome to redistribute it${RESET}"
+    echo -e "${GRAY}    under the terms of the GNU General Public License version 3 as${RESET}"
+    echo -e "${GRAY}    published by the Free Software Foundation${RESET}"
+    echo
+    echo -e "${LIGHTRED}You must accept the license in order to continue or type 'n' to exit the program${RESET}"
+    read -p ": " choice_license
+        if [[ "$choice_license" =~ ^[Nn]$ ]]; then
+            exit 1
+        else
+            echo -e "${LIGHTGREEN}You agree to the terms of the GNU General Public License version 3${RESET}"
+            echo -e "${LIGHTGREEN}You may continue${RESET}"
+            echo
+	    touch "$treble_d/.l_done.txt"
+        fi
+fi
+
 ## if busybox is installed then proceed, if not then install
 if type busybox >/dev/null 2>&1; then
     echo
@@ -53,12 +86,6 @@ else
     echo -e "Google is your friend"
     exit 1
 fi
-
-## treble_experimentations folder
-treble_d="$(busybox dirname $0)"
-
-## export color config file
-export $(cat "$treble_d"/config/color.cfg | grep -v ^# | busybox xargs)
 
 ## check for i386 architecture with dpkg --print-foreign-architectures
 if type dpkg >/dev/null 2>&1; then
@@ -89,10 +116,12 @@ if [ -f "$treble_d/.p_done.txt" ]; then
     echo
 elif type apt-get >/dev/null 2>&1; then
     echo -e "${YELLOW}Installing required packages for compiling ROM...${RESET}"
+    echo
     dpkg -s "${packages[@]}" >/dev/null 2>&1 || install_packages
     touch "$treble_d/.p_done.txt"
 else
     echo -e "${LIGHTRED}Non-debian based distribution detected. Proceed at your own risk!${RESET}"
+    echo
 fi
 
 ## if git is installed then proceed, if not then install and setup
@@ -664,6 +693,7 @@ function build_variant() {
             make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
         else
             read -p $'\e[1;33mWanna run vndk-test-sepolicy m8? (y/N) \e[0m' choice_vndk
+	    echo
                 if [[ "$choice_vndk" =~ ^[Yy]$ ]]; then
                     make "$extra_make_options" BUILD_NUMBER="$rom_rf" vndk-test-sepolicy
                 fi
