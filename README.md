@@ -98,3 +98,22 @@ clone this repository, then:
   by this change
 * `[userfriendly]` This commit is NOT used for hardware support, but
   to make the rom more user friendly
+
+---
+
+    Copyright (C) 2018-2019  Growtopia Jaw
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.   
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+If you have any enquiries, please feel free to contact me by email at growtopiajaw AT gmail.com
