@@ -1,6 +1,6 @@
 # Statistics
 
-# Releases
+## Releases
 * ![GitHub All Releases](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/total.svg)
 * ![GitHub Releases (by Release)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v1/total.svg)
 * ![GitHub Releases (by Release)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v2/total.svg)
@@ -8,7 +8,7 @@
 * ![GitHub Releases (by Release)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v4/total.svg)
 * ![GitHub Releases (by Release)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v5/total.svg)
 
-# Downloads
+## Downloads
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v1/lineage151-arm64-aonly-vanilla-nosu.img.svg)
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v1/lineage151-arm64-aonly-vanilla-nosu.img.xz.svg)
 * ![GitHub Releases (by Asset)](https://img.shields.io/github/downloads/GrowtopiaJaw/treble_experimentations/v2/du81-arm64-aonly-vanilla-nosu.img.svg)
