@@ -29,8 +29,19 @@
 * ![Snyk Vulnerabilities for GitHub Repo (Specific Manifest)](https://img.shields.io/snyk/vulnerabilities/github/GrowtopiaJaw/treble_experimentations/release/requirements.txt.svg)
 
 ## Size
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/GrowtopiaJaw/treble_experimentations.svg)
-![GitHub repo size](https://img.shields.io/github/repo-size/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub repo size](https://img.shields.io/github/repo-size/GrowtopiaJaw/treble_experimentations.svg)
+
+## Activity
+* ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/GrowtopiaJaw/treble_experimentations.svg)
+* ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v1.svg)
+* ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v2.svg)
+* ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v3.svg)
+* ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v4.svg)
+* ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/GrowtopiaJaw/treble_experimentations/v5.svg)
+![GitHub contributors](https://img.shields.io/github/contributors/GrowtopiaJaw/treble_experimentations.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/GrowtopiaJaw/treble_experimentations.svg)
+![GitHub Release Date](https://img.shields.io/github/release-date/GrowtopiaJaw/treble_experimentations.svg)
 
 # Community
 
