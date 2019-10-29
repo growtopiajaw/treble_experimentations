@@ -227,7 +227,8 @@ ROM Types:
   crdroid81
   dot81
   du81
-  e-0.2
+  e-oreo
+  e-pie
   firehound81
   havoc81
   havoc90
@@ -243,11 +244,12 @@ ROM Types:
   pixel81
   pixel90
   posp81
+  posp90
   slim81
   tipsy81
   xenonhd81
 
-* Currently 36 types of ROM are available :D
+* Currently 38 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -405,11 +407,18 @@ function get_rom_type() {
                 treble_generate="du"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
-            e-0.2)
+            e-oreo)
                 mainrepo="https://gitlab.e.foundation/e/os/android.git"
-                mainbranch="eelo-0.2"
-                ## e-0.2 = lineage 15.1 = android-8.1 = facepalm = who changed localmanifestbranch to android-9.0
+                mainbranch="v1-oreo"
                 localManifestBranch="android-8.1"
+                ## lineage based rom
+                treble_generate="lineage"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            e-pie)
+                mainrepo="https://gitlab.e.foundation/e/os/android.git"
+                mainbranch="v1-pie"
+                localManifestBranch="android-9.0"
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
@@ -516,6 +525,13 @@ function get_rom_type() {
                 mainrepo="https://github.com/PotatoProject/manifest.git"
                 mainbranch="aligot-release"
                 localManifestBranch="android-8.1"
+                treble_generate="posp"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            posp90)
+                mainrepo="https://github.com/PotatoProject/manifest.git"
+                mainbranch="baked-release"
+                localManifestBranch="android-9.0"
                 treble_generate="posp"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
