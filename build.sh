@@ -215,6 +215,7 @@ ROM Types:
   aicp81
   aokp81
   aosip81
+  aosmp90
   aosp80
   aosp81
   aosp90
@@ -246,7 +247,7 @@ ROM Types:
   tipsy81
   xenonhd81
 
-* Currently 35 types of ROM are available :D
+* Currently 36 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -316,6 +317,13 @@ function get_rom_type() {
                 mainbranch="oreo-mr1"
                 localManifestBranch="android-8.1"
                 treble_generate="aosip"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            aosmp90)
+                mainrepo="https://gitlab.com/AOSmP/android_manifest.git"
+                mainbranch="pie"
+                localManifestBranch="android-9.0"
+                treble_generate="aosmp"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             aosp80)
