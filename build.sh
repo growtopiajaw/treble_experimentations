@@ -231,6 +231,8 @@ ROM Types:
   e-oreo
   e-pie
   firehound81
+  graphene90
+  graphene100
   havoc81
   havoc90
   komodos90
@@ -250,7 +252,7 @@ ROM Types:
   tipsy81
   xenonhd81
 
-* Currently 38 types of ROM are available :D
+* Currently 41 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -458,6 +460,22 @@ function get_rom_type() {
                 treble_generate="firehound"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 jack_enabled="true"
+                ;;
+            graphene90)
+                mainrepo="https://github.com/GrapheneOS/platform_manifest.git"
+                mainbranch="pie"
+                localManifestBranch="android-9.0"
+                treble_generate="graphene"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
+                ;;
+            graphene100)
+                mainrepo="https://github.com/GrapheneOS/platform_manifest.git"
+                mainbranch="10"
+                localManifestBranch="android-10.0"
+                treble_generate="firehound"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             havoc81)
                 mainrepo="https://gitlab.com/GrowtopiaJaw/havoc_android_manifest.git"
