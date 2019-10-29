@@ -219,6 +219,7 @@ ROM Types:
   aosp81
   aosp90
   aquari81
+  aquari90
   bootleggers81
   carbon81
   cosmic81
@@ -229,11 +230,13 @@ ROM Types:
   firehound81
   havoc81
   havoc90
+  komodos90
   lineage151
   lineage160
   mokee81
   omni81
   omni90
+  rebellion90
   rr81
   rr90
   pixel81
@@ -243,7 +246,7 @@ ROM Types:
   tipsy81
   xenonhd81
 
-* Currently 28 types of ROM are available :D
+* Currently 35 types of ROM are available :D
 
 Variants are dash-joined combinations of (in order):
 
@@ -343,6 +346,13 @@ function get_rom_type() {
                 treble_generate="aquari"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
+            aquari90)
+                mainrepo="https://github.com/AquariOS/manifest.git"
+                mainbranch="a9"
+                localManifestBranch="android-9.0"
+                treble_generate="aquari"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
             bootleggers81)
                 mainrepo="https://github.com/BootleggersROM/manifest.git"
                 mainbranch="oreo.1"
@@ -417,6 +427,13 @@ function get_rom_type() {
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
+            komodos90)
+                mainrepo="https://github.com/KomodOS-Rom/platform_manifest.git"
+                mainbranch="pie"
+                localManifestBranch="android-9.0"
+                treble_generate="komodos"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
             lineage151)
                 mainrepo="https://github.com/LineageOS/android.git"
                 mainbranch="lineage-15.1"
@@ -448,6 +465,13 @@ function get_rom_type() {
             omni90)
                 mainrepo="https://github.com/omnirom/android.git"
                 mainbranch="android-9.0"
+                localManifestBranch="android-9.0"
+                treble_generate="omni"
+                extra_make_options="WITHOUT_CHECK_API=true"
+                ;;
+            rebellion90)
+                mainrepo="https://github.com/RebellionOS/manifest.git"
+                mainbranch="pie"
                 localManifestBranch="android-9.0"
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
