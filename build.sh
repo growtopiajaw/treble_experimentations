@@ -219,6 +219,7 @@ ROM Types:
   aosp80
   aosp81
   aosp90
+  aosp100
   aquari81
   aquari90
   bootleggers81
@@ -292,6 +293,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aex"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             aex91)
                 mainrepo="https://github.com/AospExtended/manifest.git"
@@ -299,6 +301,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="aex"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             aicp81)
                 mainrepo="https://github.com/AICP/platform_manifest.git"
@@ -306,6 +309,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aicp"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             aokp81)
                 mainrepo="https://github.com/AOKP/platform_manifest.git"
@@ -313,6 +317,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aokp"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             aosip81)
                 mainrepo="https://github.com/AOSiP/platform_manifest.git"
@@ -320,6 +325,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aosip"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             aosmp90)
                 mainrepo="https://gitlab.com/AOSmP/android_manifest.git"
@@ -327,6 +333,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="aosmp"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             aosp80)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
@@ -334,6 +341,7 @@ function get_rom_type() {
                 localManifestBranch="master"
                 treble_generate=""
                 extra_make_options=""
+                jack_enabled="true"
                 ;;
             aosp81)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
@@ -341,6 +349,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate=""
                 extra_make_options=""
+                jack_enabled="true"
                 ;;
             aosp90)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
@@ -348,6 +357,15 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options=""
+                jack_enabled="false"
+                ;;
+            aosp100)
+                mainrepo="https://android.googlesource.com/platform/manifest.git"
+                mainbranch="android-10.0.0_r2"
+                localManifestBranch="android-10.0"
+                treble_generate=""
+                extra_make_options=""
+                jack_enabled="false"
                 ;;
             aquari81)
                 mainrepo="https://github.com/AquariOS/manifest.git"
@@ -355,6 +373,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="aquari"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             aquari90)
                 mainrepo="https://github.com/AquariOS/manifest.git"
@@ -362,6 +381,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="aquari"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             bootleggers81)
                 mainrepo="https://github.com/BootleggersROM/manifest.git"
@@ -369,6 +389,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="bootleggers"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             carbon81)
                 mainrepo="https://github.com/CarbonROM/android.git"
@@ -376,6 +397,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="carbon"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             cosmic81)
                 mainrepo="https://github.com/Cosmic-OS/platform_manifest.git"
@@ -383,6 +405,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="cosmic"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             crdroid81)
                 mainrepo="https://github.com/crdroidandroid/android.git"
@@ -391,6 +414,7 @@ function get_rom_type() {
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             dot81)
                 mainrepo="https://github.com/DotOS/manifest.git"
@@ -398,6 +422,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="dot"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             du81)
                 mainrepo="https://gitlab.com/GrowtopiaJaw/du_android_manifest.git"
@@ -406,6 +431,7 @@ function get_rom_type() {
                 ## aokp based rom, but not forever
                 treble_generate="du"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             e-oreo)
                 mainrepo="https://gitlab.e.foundation/e/os/android.git"
@@ -414,6 +440,7 @@ function get_rom_type() {
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             e-pie)
                 mainrepo="https://gitlab.e.foundation/e/os/android.git"
@@ -422,6 +449,7 @@ function get_rom_type() {
                 ## lineage based rom
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             firehound81)
                 mainrepo="https://github.com/FireHound/platform_manifest.git"
@@ -429,6 +457,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="firehound"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             havoc81)
                 mainrepo="https://gitlab.com/GrowtopiaJaw/havoc_android_manifest.git"
@@ -436,6 +465,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             havoc90)
                 mainrepo="https://github.com/Havoc-OS/android_manifest.git"
@@ -443,6 +473,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="havoc"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             komodos90)
                 mainrepo="https://github.com/KomodOS-Rom/platform_manifest.git"
@@ -450,6 +481,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="komodos"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             lineage151)
                 mainrepo="https://github.com/LineageOS/android.git"
@@ -457,6 +489,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             lineage160)
                 mainrepo="https://github.com/LineageOS/android.git"
@@ -464,6 +497,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="lineage"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             mokee81)
                 mainrepo="https://github.com/MoKee/android.git"
@@ -471,6 +505,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="mokee"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             omni81)
                 mainrepo="https://github.com/omnirom/android.git"
@@ -478,6 +513,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             omni90)
                 mainrepo="https://github.com/omnirom/android.git"
@@ -485,6 +521,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="omni"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             rebellion90)
                 mainrepo="https://github.com/RebellionOS/manifest.git"
@@ -492,6 +529,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="rebellion"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             rr81)
                 mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
@@ -499,6 +537,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="rr"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             rr90)
                 mainrepo="https://github.com/ResurrectionRemix/platform_manifest.git"
@@ -506,12 +545,14 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="rr"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             pixel81)
                 mainrepo="https://github.com/PixelExperience/manifest.git"
                 mainbranch="oreo-mr1"
                 localManifestBranch="android-8.1"
                 treble_generate=""
+                jack_enabled="true"
                 ;;
             ## devs freakin changed back mainrepo from PixelExperience-P to PixelExperience
             pixel90)
@@ -520,6 +561,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             posp81)
                 mainrepo="https://github.com/PotatoProject/manifest.git"
@@ -527,6 +569,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="posp"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             posp90)
                 mainrepo="https://github.com/PotatoProject/manifest.git"
@@ -534,6 +577,7 @@ function get_rom_type() {
                 localManifestBranch="android-9.0"
                 treble_generate="posp"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="false"
                 ;;
             slim81)
                 mainrepo="https://github.com/SlimRoms/platform_manifest.git"
@@ -541,6 +585,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="slim"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             tipsy81)
                 mainrepo="https://github.com/TipsyOs/platform_manifest.git"
@@ -549,6 +594,7 @@ function get_rom_type() {
                 ## slim based rom
                 treble_generate="slim"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             xenonhd81)
                 mainrepo="https://github.com/TeamHorizon/platform_manifest.git"
@@ -556,6 +602,7 @@ function get_rom_type() {
                 localManifestBranch="android-8.1"
                 treble_generate="xenonhd"
                 extra_make_options="WITHOUT_CHECK_API=true"
+                jack_enabled="true"
                 ;;
             esac
         shift
@@ -814,7 +861,9 @@ if [[ "$choice" =~ ^[Yy]$ ]]; then
     sync_repo
 fi
 patch_things
-jack_env
+if [[ "$jack_enabled" == true ]]; then
+    jack_env
+fi
 
 ## setting up building environment
 . build/envsetup.sh
