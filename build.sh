@@ -473,7 +473,7 @@ function get_rom_type() {
                 mainrepo="https://github.com/RebellionOS/manifest.git"
                 mainbranch="pie"
                 localManifestBranch="android-9.0"
-                treble_generate="omni"
+                treble_generate="rebellion"
                 extra_make_options="WITHOUT_CHECK_API=true"
                 ;;
             rr81)
