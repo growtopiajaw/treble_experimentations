@@ -211,7 +211,7 @@ Option:
 ROM Types:
 
   aex81
-  aex91
+  aex90
   aicp81
   aokp81
   aosip81
@@ -295,7 +295,7 @@ function get_rom_type() {
                 extra_make_options="WITHOUT_CHECK_API=true"
                 jack_enabled="true"
                 ;;
-            aex91)
+            aex90)
                 mainrepo="https://github.com/AospExtended/manifest.git"
                 mainbranch="9.x"
                 localManifestBranch="android-9.0"
