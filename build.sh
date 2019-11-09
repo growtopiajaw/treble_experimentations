@@ -353,7 +353,7 @@ function get_rom_type() {
                 ;;
             aosp90)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
-                mainbranch="android-9.0.0_r45"
+                mainbranch="android-9.0.0_r50"
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options=""
@@ -361,7 +361,7 @@ function get_rom_type() {
                 ;;
             aosp100)
                 mainrepo="https://android.googlesource.com/platform/manifest.git"
-                mainbranch="android-10.0.0_r2"
+                mainbranch="android-10.0.0_r14"
                 localManifestBranch="android-10.0"
                 treble_generate=""
                 extra_make_options=""
