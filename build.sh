@@ -352,8 +352,8 @@ function get_rom_type() {
                 jack_enabled="true"
                 ;;
             aosp90)
-                mainrepo="https://android.googlesource.com/platform/manifest.git"
-                mainbranch="android-9.0.0_r50"
+                mainrepo="https://gitlab.com/aosp-security/manifest.git"
+                mainbranch="android-9.0.0_r50-r47"
                 localManifestBranch="android-9.0"
                 treble_generate=""
                 extra_make_options=""
