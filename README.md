@@ -101,7 +101,7 @@ clone this repository, then:
 
 ---
 
-    Copyright (C) 2018-2019  Growtopia Jaw
+    Copyright (C) 2018-2020  Growtopia Jaw
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License version 3
