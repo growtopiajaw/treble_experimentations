@@ -367,6 +367,14 @@ function get_rom_type() {
                 extra_make_options=""
                 jack_enabled="false"
                 ;;
+            aosp110)
+                mainrepo="https://android.googlesource.com/platform/manifest.git"
+                mainbranch="android-11.0.0_r37"
+                localManifestBranch="android-11.0"
+                treble_generate=""
+                extra_make_options=""
+                jack_enabled="false"
+                ;;
             aquari81)
                 mainrepo="https://github.com/AquariOS/manifest.git"
                 mainbranch="a8.1.0"
