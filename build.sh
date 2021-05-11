@@ -895,22 +895,3 @@ if [[ "$choice_origin" =~ ^[Yy]$ ]]; then
             echo -e "${LIGHTGREEN}Your system-$2.img is at $treble_d/release/$rom_rf/system-$2.img${RESET}"
             echo
 fi
-
-## release to github for ME only!!
-## configure urself if u want ahahah
-## creating the config.ini part is the hardest
-## gud luck n baii!!
-if [[ "$USER" == growtopiajaw ]]; then
-    read -p $'\e[1;33mWanna release ROM to GitHub m8? (y/N) \e[0m' choice_r
-    echo
-        if [[ "$choice_r" =~ ^[Yy]$ ]]; then
-            pip install -r "$treble_d/release/requirements.txt"
-            read -p $'\e[1;33mROM name? \e[0m' r_name
-            echo -e "${LIGHTGREEN}Oke $r_name it is!${RESET}"
-            echo
-            read -p $'\e[1;33mVersion ? \e[0m' r_version
-            echo -e "${LIGHTGREEN}Naisss${RESET}"
-            echo
-            python "$treble_d/release/push.py" "$r_name"  "v$r_version" "release/$rom_rf/"
-        fi
-fi
